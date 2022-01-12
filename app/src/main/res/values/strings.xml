@@ -13,4 +13,5 @@
     <string name="No_tags">No tags</string>
     <string name="Loading">Loading…</string>
     <string name="Tag_label">Tag name</string>
+    <string name="Save">Save</string>
 </resources>

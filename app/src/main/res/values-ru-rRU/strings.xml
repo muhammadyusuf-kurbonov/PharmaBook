@@ -13,4 +13,5 @@
     <string name="No_tags">Нет тегов</string>
     <string name="Loading">Загрузка ...</string>
     <string name="Tag_label">Тег</string>
+    <string name="Save">Сохранить</string>
 </resources>

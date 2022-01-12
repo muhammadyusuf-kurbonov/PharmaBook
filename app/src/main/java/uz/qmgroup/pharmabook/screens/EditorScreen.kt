@@ -1,8 +1,6 @@
 package uz.qmgroup.pharmabook.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
@@ -25,9 +23,10 @@ fun EditorScreen(
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
-    var addScreenOpen by remember { mutableStateOf(false) }
+    var currentPath by remember { mutableStateOf("") }
+    var medicine by remember { mutableStateOf<Medicine?>(null) }
 
-    if (!addScreenOpen) {
+    if (currentPath.isEmpty()) {
         Box(modifier = modifier) {
             var loading by remember {
                 mutableStateOf(true)
@@ -60,31 +59,53 @@ fun EditorScreen(
                             updateController++
                         }
                     },
+                    onEdit = {
+                        medicine = it
+                        currentPath = "edit"
+                    },
                 )
             }
             FloatingActionButton(
                 modifier = Modifier
                     .align(alignment = Alignment.BottomEnd)
                     .padding(16.dp),
-                onClick = { addScreenOpen = true }
+                onClick = { currentPath = "add" }
             ) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = null)
             }
         }
-    } else {
+    } else if (currentPath == "add") {
 
-        val coroutineScope = rememberCoroutineScope()
 
-        AddScreen(
+        AddEditScreen(
             modifier = modifier,
-            onAdd = {
-                coroutineScope.launch {
+            onSave = {
+                scope.launch {
                     MedicinesRepo(FirebaseFirestore.getInstance())
                         .addMedicine(it)
 
-                    addScreenOpen = false
+                    currentPath = ""
                 }
+            },
+            onCancel = {
+                currentPath = ""
             }
+        )
+    } else if (currentPath == "edit") {
+        AddEditScreen(
+            modifier = modifier,
+            onSave = {
+                scope.launch {
+                    MedicinesRepo(FirebaseFirestore.getInstance())
+                        .updateMedicine(it.id, it)
+
+                    currentPath = ""
+                }
+            },
+            onCancel = {
+                currentPath = ""
+            },
+            medicine = medicine
         )
     }
 }
