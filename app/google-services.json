@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "903094347617",
+    "project_id": "pharmabook-fd140",
+    "storage_bucket": "pharmabook-fd140.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903094347617:android:5389d438e645f6415dc720",
+        "android_client_info": {
+          "package_name": "uz.qmgroup.pharmabook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "903094347617-4rl04q7b354k2ejc8jq05ljbmqllvg7t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk96CDq9kgXfQiLs-qLAaFK5GKJE7YXhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "903094347617-4rl04q7b354k2ejc8jq05ljbmqllvg7t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
