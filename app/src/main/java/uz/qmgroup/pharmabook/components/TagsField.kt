@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.R
 import uz.qmgroup.pharmabook.models.Tag
 import uz.qmgroup.pharmabook.repos.TagsRepo
+import java.util.*
 
 @Composable
 fun TagsField(
@@ -44,23 +45,25 @@ fun TagsField(
     val scope = rememberCoroutineScope()
 
     val allTags by produceState(initialValue = emptyList<Tag>(), producer = {
-            scope.launch {
-                value = TagsRepo().getTags()?.toObjects(Tag::class.java) ?: emptyList()
-                loading = false
-            }
-        }, key1 = updateController)
+        scope.launch {
+            value = TagsRepo().getTags()?.toObjects(Tag::class.java) ?: emptyList()
+            loading = false
+        }
+    }, key1 = updateController)
 
 
-    Row(modifier = modifier
-        .height(IntrinsicSize.Min),
+    Row(
+        modifier = modifier
+            .height(IntrinsicSize.Min),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        FlowRow(modifier = Modifier
-            .weight(1f)
-            .fillMaxHeight()
-            .background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
-            .clickable { dropdownShow = true }
-            .padding(4.dp),
+        FlowRow(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
+                .clickable { dropdownShow = true }
+                .padding(4.dp),
         ) {
             tags.forEach {
                 Chip(
@@ -109,12 +112,20 @@ fun TagsField(
                 Column {
                     TextField(
                         value = tag,
-                        onValueChange = { tag = it },
+                        onValueChange = { newValue ->
+                            tag =
+                                newValue.trim().replaceFirstChar {
+                                    if (it.isLowerCase()) it.titlecase(
+                                        Locale.getDefault()
+                                    ) else it.toString()
+                                }
+                        },
                         modifier = Modifier.padding(16.dp),
                         label = { Text(stringResource(R.string.Tag_label)) }
                     )
                     TextButton(
                         modifier = Modifier.align(Alignment.End),
+                        enabled = tag.isNotEmpty(),
                         onClick = {
                             scope.launch {
                                 TagsRepo().addTag(Tag(label = tag))

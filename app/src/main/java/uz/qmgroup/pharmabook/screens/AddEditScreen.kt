@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import uz.qmgroup.pharmabook.R
 import uz.qmgroup.pharmabook.components.TagsField
 import uz.qmgroup.pharmabook.models.Medicine
+import java.util.*
 
 @Composable
 fun AddEditScreen(
@@ -87,13 +88,29 @@ fun AddEditScreen(
                 onClick = {
                     saving.value = true
                     val newMedicine = medicine?.copy(
-                        name = medicineName,
-                        producer = medicineProducer,
+                        name = medicineName.trim().replaceFirstChar {
+                            if (it.isLowerCase()) it.titlecase(
+                                Locale.getDefault()
+                            ) else it.toString()
+                        },
+                        producer = medicineProducer.trim().replaceFirstChar {
+                            if (it.isLowerCase()) it.titlecase(
+                                Locale.getDefault()
+                            ) else it.toString()
+                        },
                         tags = medicineTags.toList()
                     )
                         ?: Medicine(
-                            name = medicineName,
-                            producer = medicineProducer,
+                            name = medicineName.trim().replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(
+                                    Locale.getDefault()
+                                ) else it.toString()
+                            },
+                            producer = medicineProducer.trim().replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(
+                                    Locale.getDefault()
+                                ) else it.toString()
+                            },
                             tags = medicineTags.toList()
                         )
                     onSave(newMedicine)

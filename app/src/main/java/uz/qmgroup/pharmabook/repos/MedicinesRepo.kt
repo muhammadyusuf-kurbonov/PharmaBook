@@ -32,6 +32,20 @@ class MedicinesRepo(
         firebaseFirestore.collection("medicines").whereArrayContainsAny("tags", tags).get()
             .toSuspendFunc()
 
+    suspend fun searchMedicineByName(name: String) =
+        firebaseFirestore.collection("medicines")
+            .whereGreaterThanOrEqualTo("name", name)
+            .whereLessThanOrEqualTo("name", "$name\uffff")
+            .get().toSuspendFunc()
+
+    suspend fun search(searchPattern: String): List<Medicine> {
+        if (searchPattern.isEmpty())
+            return getMedicines()?.toObjects(Medicine::class.java) ?: emptyList()
+        return searchMedicineByName(
+            searchPattern.trim()
+        )?.toObjects(Medicine::class.java) ?: emptyList()
+    }
+
     // wrapper to convert task to coroutine
     suspend fun <TResult : Any> Task<TResult>.toSuspendFunc() = suspendCoroutine<TResult?> {
         addOnCompleteListener { task ->
