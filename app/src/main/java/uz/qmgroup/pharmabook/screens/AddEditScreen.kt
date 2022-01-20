@@ -10,7 +10,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import uz.qmgroup.pharmabook.R
 import uz.qmgroup.pharmabook.components.TagsField
-import uz.qmgroup.pharmabook.models.Medicine
+import uz.qmgroup.pharmabook.medicines.Medicine
+import uz.qmgroup.pharmabook.repos.MedicinesRepo
+import uz.qmgroup.pharmabook.tags.Tag
 import java.util.*
 
 @Composable
@@ -18,21 +20,24 @@ fun AddEditScreen(
     modifier: Modifier = Modifier,
     onSave: (Medicine) -> Unit,
     onCancel: () -> Unit,
-    medicine: Medicine? = null
+    medicineId: Long? = null
 ) {
     var medicineName by remember { mutableStateOf("") }
 
     var medicineProducer by remember { mutableStateOf("") }
 
-    val medicineTags = remember { mutableStateListOf<String>() }
+    val medicineTags = remember { mutableStateListOf<Tag>() }
 
     val saving = remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = medicine) {
-        medicine?.let {
-            medicineName = it.name
-            medicineProducer = it.producer
-            medicineTags.addAll(it.tags)
+    LaunchedEffect(key1 = medicineId) {
+        medicineId?.let {
+            val medicine = MedicinesRepo().getMedicine(medicineId)
+            medicine?.let {
+                medicineName = it.name
+                medicineProducer = it.vendor
+                medicineTags.addAll(it.tags ?: emptyList())
+            }
         }
     }
 
@@ -87,40 +92,26 @@ fun AddEditScreen(
             Button(
                 onClick = {
                     saving.value = true
-                    val newMedicine = medicine?.copy(
-                        name = medicineName.trim().replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(
-                                Locale.getDefault()
-                            ) else it.toString()
-                        },
-                        producer = medicineProducer.trim().replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(
-                                Locale.getDefault()
-                            ) else it.toString()
-                        },
+                    val newMedicineModels = Medicine(
+                        id = medicineId ?: 0,
+                        name = medicineName.formatForAppDatabase(),
+                        vendor = medicineProducer.formatForAppDatabase(),
                         tags = medicineTags.toList()
                     )
-                        ?: Medicine(
-                            name = medicineName.trim().replaceFirstChar {
-                                if (it.isLowerCase()) it.titlecase(
-                                    Locale.getDefault()
-                                ) else it.toString()
-                            },
-                            producer = medicineProducer.trim().replaceFirstChar {
-                                if (it.isLowerCase()) it.titlecase(
-                                    Locale.getDefault()
-                                ) else it.toString()
-                            },
-                            tags = medicineTags.toList()
-                        )
-                    onSave(newMedicine)
+                    onSave(newMedicineModels)
                 },
                 modifier = Modifier
                     .padding(8.dp, 0.dp),
                 enabled = medicineName.isNotEmpty() && medicineProducer.isNotEmpty() && !saving.value
             ) {
-                Text(stringResource(medicine?.id?.let { R.string.Save } ?: R.string.add))
+                Text(stringResource(medicineId?.let { R.string.Save } ?: R.string.add))
             }
         }
     }
+}
+
+fun String.formatForAppDatabase() = trim().replaceFirstChar {
+    if (it.isLowerCase()) it.titlecase(
+        Locale.getDefault()
+    ) else it.toString()
 }

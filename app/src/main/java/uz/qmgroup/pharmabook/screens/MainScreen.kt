@@ -129,6 +129,7 @@ fun MainScreenMenu(
         DropdownMenuItem(
             onClick = {
                 navigate(Screens.RepoEditor)
+                menuExpanded = false
             }
         ) {
             Text(stringResource(R.string.Editor))
@@ -136,6 +137,7 @@ fun MainScreenMenu(
         DropdownMenuItem(
             onClick = {
                 navigate(Screens.About)
+                menuExpanded = false
             }
         ) {
             Text(stringResource(R.string.About))

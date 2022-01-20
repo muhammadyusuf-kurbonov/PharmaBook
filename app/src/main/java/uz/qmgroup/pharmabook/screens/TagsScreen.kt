@@ -7,10 +7,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import uz.qmgroup.pharmabook.components.MedicinesList
 import uz.qmgroup.pharmabook.components.TagsList
-import uz.qmgroup.pharmabook.models.Medicine
-import uz.qmgroup.pharmabook.models.Tag
+import uz.qmgroup.pharmabook.medicines.Medicine
 import uz.qmgroup.pharmabook.repos.MedicinesRepo
 import uz.qmgroup.pharmabook.repos.TagsRepo
+import uz.qmgroup.pharmabook.tags.Tag
 
 @Composable
 fun TagsScreen(
@@ -22,9 +22,7 @@ fun TagsScreen(
         mutableStateOf(true)
     }
     val list by produceState(initialValue = emptyList<Tag>(), producer = {
-        this.value = TagsRepo().getTags()?.toObjects(
-            Tag::class.java
-        ) ?: emptyList()
+        this.value = TagsRepo().getTags()
         loading = false
     })
 
@@ -64,7 +62,7 @@ fun MedicineByTagScreen(
     val list by produceState(initialValue = emptyList<Medicine>(), producer = {
         this.value = MedicinesRepo().getMedicinesByTags(
             listOf(tag)
-        )?.toObjects(Medicine::class.java) ?: emptyList()
+        )
         loading = false
     }, key1 = tag)
 

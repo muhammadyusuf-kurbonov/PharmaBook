@@ -12,10 +12,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.components.MedicinesList
-import uz.qmgroup.pharmabook.models.Medicine
+import uz.qmgroup.pharmabook.medicines.Medicine
 import uz.qmgroup.pharmabook.repos.MedicinesRepo
 
 @Composable
@@ -37,9 +36,7 @@ fun EditorScreen(
             }
 
             val list by produceState(initialValue = emptyList<Medicine>(), producer = {
-                this.value = MedicinesRepo().getMedicines()?.toObjects(
-                    Medicine::class.java
-                ) ?: emptyList()
+                this.value = MedicinesRepo().getMedicines()
                 loading = false
             }, key1 = updateController)
 
@@ -55,7 +52,7 @@ fun EditorScreen(
                     onDelete = {
                         scope.launch {
                             loading = true
-                            MedicinesRepo().deleteMedicine(it.id)
+                            MedicinesRepo().deleteMedicine(it)
                             updateController++
                         }
                     },
@@ -75,13 +72,11 @@ fun EditorScreen(
             }
         }
     } else if (currentPath == "add") {
-
-
         AddEditScreen(
             modifier = modifier,
             onSave = {
                 scope.launch {
-                    MedicinesRepo(FirebaseFirestore.getInstance())
+                    MedicinesRepo()
                         .addMedicine(it)
 
                     currentPath = ""
@@ -96,8 +91,7 @@ fun EditorScreen(
             modifier = modifier,
             onSave = {
                 scope.launch {
-                    MedicinesRepo(FirebaseFirestore.getInstance())
-                        .updateMedicine(it.id, it)
+                    MedicinesRepo().updateMedicine(it)
 
                     currentPath = ""
                 }
@@ -105,7 +99,7 @@ fun EditorScreen(
             onCancel = {
                 currentPath = ""
             },
-            medicine = medicine
+            medicineId = medicine?.id
         )
     }
 }

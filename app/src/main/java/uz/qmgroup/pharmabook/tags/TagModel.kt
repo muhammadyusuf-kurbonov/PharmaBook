@@ -1,9 +1,9 @@
-package uz.qmgroup.pharmabook.models
+package uz.qmgroup.pharmabook.tags
 
 import androidx.annotation.Keep
 
 @Keep
-data class Tag(
+data class TagModel(
     var id: String = "",
     val label: String = "",
 )

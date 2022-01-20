@@ -15,15 +15,15 @@ import androidx.compose.ui.window.Dialog
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.R
-import uz.qmgroup.pharmabook.models.Tag
 import uz.qmgroup.pharmabook.repos.TagsRepo
+import uz.qmgroup.pharmabook.tags.Tag
 import java.util.*
 
 @Composable
 fun TagsField(
-    tags: List<String>,
-    addTag: (String) -> Unit,
-    removeTag: (String) -> Unit,
+    tags: List<Tag>,
+    addTag: (Tag) -> Unit,
+    removeTag: (Tag) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var dropdownShow by remember {
@@ -44,9 +44,9 @@ fun TagsField(
 
     val scope = rememberCoroutineScope()
 
-    val allTags by produceState(initialValue = emptyList<Tag>(), producer = {
+    val allTagModels by produceState(initialValue = emptyList<Tag>(), producer = {
         scope.launch {
-            value = TagsRepo().getTags()?.toObjects(Tag::class.java) ?: emptyList()
+            value = TagsRepo().getTags()
             loading = false
         }
     }, key1 = updateController)
@@ -65,11 +65,11 @@ fun TagsField(
                 .clickable { dropdownShow = true }
                 .padding(4.dp),
         ) {
-            tags.forEach {
+            tags.forEach {tag ->
                 Chip(
                     modifier = Modifier.padding(4.dp, 0.dp),
-                    text = it,
-                    onClick = { tag -> removeTag(tag) }
+                    text = tag.label,
+                    onClick = { removeTag(tag) }
                 )
             }
             if (tags.isEmpty()) Text(text = stringResource(R.string.No_tags))
@@ -80,10 +80,10 @@ fun TagsField(
 
         DropdownMenu(expanded = dropdownShow, onDismissRequest = { dropdownShow = false }) {
             if (!loading) {
-                allTags.filterNot {
-                    tags.contains(it.label)
+                allTagModels.filterNot {
+                    tags.contains(it)
                 }.forEach {
-                    DropdownMenuItem(onClick = { addTag(it.label) }) {
+                    DropdownMenuItem(onClick = { addTag(it) }) {
                         Text(text = it.label)
                     }
                 }
@@ -114,7 +114,7 @@ fun TagsField(
                         value = tag,
                         onValueChange = { newValue ->
                             tag =
-                                newValue.trim().replaceFirstChar {
+                                newValue.replaceFirstChar {
                                     if (it.isLowerCase()) it.titlecase(
                                         Locale.getDefault()
                                     ) else it.toString()
@@ -128,7 +128,7 @@ fun TagsField(
                         enabled = tag.isNotEmpty(),
                         onClick = {
                             scope.launch {
-                                TagsRepo().addTag(Tag(label = tag))
+                                TagsRepo().createTag(Tag(label = tag.trim(), id = 0))
                                 updateController++
                                 addTagDialog = false
                             }

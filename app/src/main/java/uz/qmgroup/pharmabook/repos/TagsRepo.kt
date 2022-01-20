@@ -1,34 +1,31 @@
 package uz.qmgroup.pharmabook.repos
 
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.FirebaseFirestore
-import uz.qmgroup.pharmabook.models.Tag
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import uz.qmgroup.pharmabook.database.AppDatabase
+import uz.qmgroup.pharmabook.tags.Tag
+import uz.qmgroup.pharmabook.tags.TagEntity
 
-class TagsRepo(
-    firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-) {
-    private val collectionReference = firestore.collection("tags")
-
-    suspend fun getTags() = collectionReference.get().toSuspendFunc()
-
-    suspend fun addTag(tag: Tag){
-        val documentReference = collectionReference.document()
-        tag.id = documentReference.id
-        documentReference.set(tag).toSuspendFunc()
+class TagsRepo() {
+    suspend fun getTags(): List<Tag> = withContext(Dispatchers.IO){
+        AppDatabase.Instance?.run {
+            tagDao().getAll().map { it.toTag() }
+        } ?: emptyList()
     }
 
-    suspend fun deleteTag(tag: Tag) = collectionReference.document(tag.id).delete().toSuspendFunc()
+    suspend fun createTag(tag: Tag) = withContext(Dispatchers.IO){
+        AppDatabase.Instance?.run {
+            tagDao().insert(
+                TagEntity(
+                    refId = "", label = tag.label,
+                )
+            )
+        }
+    }
 
-    suspend fun <TResult : Any> Task<TResult>.toSuspendFunc() = suspendCoroutine<TResult?> {
-        addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                it.resume(task.result)
-            } else {
-                it.resumeWithException(task.exception!!)
-            }
+    suspend fun deleteTag(tag: Tag) = withContext(Dispatchers.IO){
+        AppDatabase.Instance?.run {
+            tagDao().delete(tag.toEntity())
         }
     }
 }

@@ -8,17 +8,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.R
-import uz.qmgroup.pharmabook.models.Medicine
-import uz.qmgroup.pharmabook.repos.MedicinesRepo
+import uz.qmgroup.pharmabook.medicines.Medicine
 
 @Composable
 fun MedicinesList(
@@ -40,7 +37,7 @@ fun MedicinesList(
             items(list) {
                 MedicineCard(
                     modifier = Modifier.padding(4.dp),
-                    medicine = it,
+                    medicineModels = it,
                     editorEnabled = editorEnabled,
                     onEdit = onEdit,
                     onDelete = onDelete
@@ -61,7 +58,7 @@ fun MedicinesList(
 @Composable
 fun MedicineCard(
     modifier: Modifier = Modifier,
-    medicine: Medicine,
+    medicineModels: Medicine,
     editorEnabled: Boolean = false,
     onEdit: (Medicine) -> Unit = {},
     onDelete: (Medicine) -> Unit = {}
@@ -71,16 +68,16 @@ fun MedicineCard(
             modifier = Modifier.padding(16.dp),
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = medicine.name, style = MaterialTheme.typography.h5)
+                Text(text = medicineModels.name, style = MaterialTheme.typography.h5)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = medicine.producer.uppercase(), style = MaterialTheme.typography.body2)
+                Text(text = medicineModels.vendor.uppercase(), style = MaterialTheme.typography.body2)
             }
             if (editorEnabled) {
-                IconButton(onClick = { onEdit(medicine) }) {
+                IconButton(onClick = { onEdit(medicineModels) }) {
                     Icon(imageVector = Icons.Default.Edit, contentDescription = null)
                 }
                 IconButton(onClick = {
-                    onDelete(medicine)
+                    onDelete(medicineModels)
                 }) {
                     Icon(
                         imageVector = Icons.Default.Delete,

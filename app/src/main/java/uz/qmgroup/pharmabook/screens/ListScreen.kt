@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.R
 import uz.qmgroup.pharmabook.components.MedicinesList
-import uz.qmgroup.pharmabook.models.Medicine
+import uz.qmgroup.pharmabook.medicines.Medicine
 import uz.qmgroup.pharmabook.repos.MedicinesRepo
 import java.util.*
 
@@ -36,8 +36,13 @@ fun ListScreen(modifier: Modifier = Modifier) {
             mutableStateListOf<Medicine>()
         }
 
-        LaunchedEffect(key1 = Unit) {
+        LaunchedEffect(key1 = searchPattern) {
+            if (loading)
+                return@LaunchedEffect
+            loading = true
+            searchResults.clear()
             searchResults.addAll(MedicinesRepo().search(searchPattern))
+            loading = false
         }
 
         TextField(
