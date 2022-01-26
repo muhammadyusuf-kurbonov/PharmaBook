@@ -15,4 +15,6 @@
     <string name="Tag_label">Tag name</string>
     <string name="Save">Save</string>
     <string name="search">Search</string>
+    <string name="Column">Column</string>
+    <string name="Row">Row</string>
 </resources>

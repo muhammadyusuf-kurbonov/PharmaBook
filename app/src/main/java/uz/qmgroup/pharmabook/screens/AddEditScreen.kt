@@ -1,12 +1,14 @@
 package uz.qmgroup.pharmabook.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import uz.qmgroup.pharmabook.R
 import uz.qmgroup.pharmabook.components.TagsField
@@ -26,6 +28,8 @@ fun AddEditScreen(
 
     var medicineProducer by remember { mutableStateOf("") }
 
+    var medicinePosition by remember { mutableStateOf(0 to 0) }
+
     val medicineTags = remember { mutableStateListOf<Tag>() }
 
     val saving = remember { mutableStateOf(false) }
@@ -36,6 +40,7 @@ fun AddEditScreen(
             medicine?.let {
                 medicineName = it.name
                 medicineProducer = it.vendor
+                medicinePosition = it.positionColumn to it.positionRow
                 medicineTags.addAll(it.tags ?: emptyList())
             }
         }
@@ -61,6 +66,30 @@ fun AddEditScreen(
             onValueChange = { medicineProducer = it },
             label = { Text(stringResource(R.string.Producer)) },
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)) {
+            OutlinedTextField(
+                modifier = Modifier.weight(1f),
+                value = medicinePosition.first.toString(),
+                onValueChange = { medicinePosition = it.toInt() to medicinePosition.second },
+                label = { Text(stringResource(R.string.Column)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            )
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            OutlinedTextField(
+                modifier = Modifier.weight(1f),
+                value = medicinePosition.second.toString(),
+                onValueChange = { medicinePosition = medicinePosition.first to it.toInt() },
+                label = { Text(stringResource(R.string.Row)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            )
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -96,6 +125,8 @@ fun AddEditScreen(
                         id = medicineId ?: 0,
                         name = medicineName.formatForAppDatabase(),
                         vendor = medicineProducer.formatForAppDatabase(),
+                        positionColumn = medicinePosition.first,
+                        positionRow = medicinePosition.second,
                         tags = medicineTags.toList()
                     )
                     onSave(newMedicineModels)

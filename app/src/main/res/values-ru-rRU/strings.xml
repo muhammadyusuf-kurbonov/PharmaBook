@@ -15,4 +15,6 @@
     <string name="Tag_label">Тег</string>
     <string name="Save">Сохранить</string>
     <string name="search">Поиск</string>
+    <string name="Column">Полка</string>
+    <string name="Row">Ряд</string>
 </resources>
