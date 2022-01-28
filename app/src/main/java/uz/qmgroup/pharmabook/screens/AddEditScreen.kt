@@ -72,11 +72,12 @@ fun AddEditScreen(
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)) {
+
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
-                value = medicinePosition.first.toString(),
-                onValueChange = { medicinePosition = it.toInt() to medicinePosition.second },
-                label = { Text(stringResource(R.string.Column)) },
+                value = medicinePosition.second.toString(),
+                onValueChange = { medicinePosition = medicinePosition.first to it.toInt() },
+                label = { Text(stringResource(R.string.Row)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
 
@@ -84,9 +85,9 @@ fun AddEditScreen(
 
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
-                value = medicinePosition.second.toString(),
-                onValueChange = { medicinePosition = medicinePosition.first to it.toInt() },
-                label = { Text(stringResource(R.string.Row)) },
+                value = medicinePosition.first.toString(),
+                onValueChange = { medicinePosition = it.toInt() to medicinePosition.second },
+                label = { Text(stringResource(R.string.Column)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
         }
