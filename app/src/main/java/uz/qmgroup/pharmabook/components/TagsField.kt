@@ -11,13 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.R
 import uz.qmgroup.pharmabook.repos.TagsRepo
 import uz.qmgroup.pharmabook.tags.Tag
-import java.util.*
 
 @Composable
 fun TagsField(
@@ -99,44 +97,12 @@ fun TagsField(
     }
 
     if (addTagDialog) {
-        Dialog(onDismissRequest = { addTagDialog = false }) {
-            var tag by remember {
-                mutableStateOf("")
-            }
-            Surface(
-                color = MaterialTheme.colors.surface,
-                contentColor = MaterialTheme.colors.contentColorFor(
-                    MaterialTheme.colors.surface
-                )
-            ) {
-                Column {
-                    TextField(
-                        value = tag,
-                        onValueChange = { newValue ->
-                            tag =
-                                newValue.replaceFirstChar {
-                                    if (it.isLowerCase()) it.titlecase(
-                                        Locale.getDefault()
-                                    ) else it.toString()
-                                }
-                        },
-                        modifier = Modifier.padding(16.dp),
-                        label = { Text(stringResource(R.string.Tag_label)) }
-                    )
-                    TextButton(
-                        modifier = Modifier.align(Alignment.End),
-                        enabled = tag.isNotEmpty(),
-                        onClick = {
-                            scope.launch {
-                                TagsRepo().createTag(Tag(label = tag.trim(), id = 0))
-                                updateController++
-                                addTagDialog = false
-                            }
-                        }) {
-                        Text(stringResource(R.string.add))
-                    }
-                }
-            }
-        }
+        TagModalDialog(
+            hideDialog = {
+                addTagDialog = false
+                updateController++
+            },
+            scope
+        )
     }
 }
