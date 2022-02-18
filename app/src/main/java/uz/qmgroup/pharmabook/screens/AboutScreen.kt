@@ -1,9 +1,6 @@
 package uz.qmgroup.pharmabook.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,11 +13,11 @@ fun AboutScreen(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier.padding(16.dp, 8.dp)
     ) {
         Text(text = "About", style = MaterialTheme.typography.caption)
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "This is a demo app for pharmabook", style = MaterialTheme.typography.body1)
+        Text(text = "This is a demo version of PharmaBook", style = MaterialTheme.typography.body1)
         // version
         Text(text = "Version: " + BuildConfig.VERSION_NAME, style = MaterialTheme.typography.body1)
         // made by

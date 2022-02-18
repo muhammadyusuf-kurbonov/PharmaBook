@@ -13,13 +13,13 @@ interface MedicineDao {
     @Query("DELETE FROM MedicineEntity WHERE medicineId = :id")
     suspend fun delete(id: Long)
 
-    @Query("SELECT * FROM MEDICINEENTITY")
+    @Query("SELECT * FROM MEDICINEENTITY ORDER BY name")
     suspend fun getAll(): List<MedicineEntity>
 
     @Query("SELECT * FROM MEDICINEENTITY WHERE medicineId = :id")
     suspend fun getById(id: Long): MedicineEntity
 
-    @Query("SELECT * FROM MEDICINEENTITY WHERE name LIKE :name")
+    @Query("SELECT * FROM MEDICINEENTITY WHERE name LIKE :name ORDER BY name")
     suspend fun getByName(name: String): List<MedicineEntity>
 
     @Query("SELECT * FROM MEDICINEENTITY WHERE medicineId = :id")
