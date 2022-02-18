@@ -21,6 +21,7 @@ import java.util.*
 @Composable
 fun ListScreen(
     modifier: Modifier = Modifier,
+    openDetails: (Long) -> Unit = {},
     viewModel: ListViewModel = viewModel()
 ) {
     var searchPattern by remember { mutableStateOf("") }
@@ -64,7 +65,7 @@ fun ListScreen(
             list = viewModel.searchResults,
             loading = viewModel.loading,
             onCLick = {
-                // TODO: Open details screen
+                openDetails(it.id)
             }
         )
     }

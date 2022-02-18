@@ -13,6 +13,7 @@ class MainActivity : ComponentActivity() {
         const val SCREEN_EDITOR_ROUTE="editor"
         const val SCREEN_ABOUT_ROUTE="about"
         const val SCREEN_TAGS_ROUTE="tags"
+        const val SCREEN_DETAILS_ROUTE="details"
 
         const val EDITOR_HOME_ROUTE="editor_home"
         const val EDITOR_MEDICINE_ROUTE="editor_medicine_screen"
