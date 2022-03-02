@@ -1,10 +1,11 @@
-package uz.qmgroup.pharmabook.screens
+package uz.qmgroup.pharmabook.screens.tags
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import com.ramcosta.composedestinations.annotation.Destination
 import uz.qmgroup.pharmabook.components.MedicinesList
 import uz.qmgroup.pharmabook.components.TagsList
 import uz.qmgroup.pharmabook.medicines.Medicine
@@ -12,6 +13,7 @@ import uz.qmgroup.pharmabook.repos.MedicinesRepo
 import uz.qmgroup.pharmabook.repos.TagsRepo
 import uz.qmgroup.pharmabook.tags.Tag
 
+@Destination
 @Composable
 fun TagsScreen(
     modifier: Modifier = Modifier

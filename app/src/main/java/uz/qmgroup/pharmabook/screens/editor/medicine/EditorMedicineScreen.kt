@@ -12,48 +12,44 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import uz.qmgroup.pharmabook.R
 import uz.qmgroup.pharmabook.components.TagsField
 
+@Destination
 @Composable
 fun EditorMedicineScreen(
     modifier: Modifier = Modifier,
-    medicineId: Long? = null,
+    medicineId: Long,
+    navigator: DestinationsNavigator,
     editorMedicineViewModel: EditorMedicineViewModel = viewModel(),
-    cancel: () -> Unit = {},
 ) {
     LaunchedEffect(key1 = medicineId) {
-        if (medicineId != null)
+        if (medicineId > -1)
             editorMedicineViewModel.loadMedicine(medicineId)
     }
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.padding(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         OutlinedTextField(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+                .fillMaxWidth(),
             value = editorMedicineViewModel.medicineName,
             onValueChange = editorMedicineViewModel::updateMedicineName,
             label = { Text(stringResource(R.string.Name)) },
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
         OutlinedTextField(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+                .fillMaxWidth(),
             value = editorMedicineViewModel.medicineVendor,
             onValueChange = editorMedicineViewModel::updateVendor,
             label = { Text(stringResource(R.string.Producer)) },
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
         ) {
 
             OutlinedTextField(
@@ -75,28 +71,25 @@ fun EditorMedicineScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
         TagsField(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+                .fillMaxWidth(),
             tags = editorMedicineViewModel.medicineTags,
             addTag = {
                 editorMedicineViewModel.medicineTags.add(it)
             },
             removeTag = {
                 editorMedicineViewModel.medicineTags.remove(it)
-            })
+            }
+        )
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
             Button(
-                onClick = cancel,
+                onClick = { navigator.popBackStack() },
                 modifier = Modifier
                     .padding(8.dp, 0.dp),
             ) {
@@ -106,13 +99,13 @@ fun EditorMedicineScreen(
             Button(
                 onClick = {
                     editorMedicineViewModel.save()
-                    cancel()
+                    navigator.popBackStack()
                 },
                 modifier = Modifier
                     .padding(8.dp, 0.dp),
                 enabled = editorMedicineViewModel.isSaveButtonEnabled()
             ) {
-                Text(stringResource(medicineId?.let { R.string.Save } ?: R.string.add))
+                Text(stringResource(if (medicineId > -1) R.string.Save else R.string.add))
             }
         }
     }

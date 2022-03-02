@@ -19,7 +19,10 @@ interface TagDao {
     @Query("SELECT * FROM TagEntity")
     suspend fun getAll(): List<TagEntity>
 
+    @Transaction
     @Query("SELECT * FROM TagEntity WHERE label IN (:ids)")
     suspend fun findByTags(ids: List<String>): List<TagWithMedicines>
 
+    @Query("SELECT * FROM TagEntity WHERE label LIKE :label")
+    suspend fun getTagByLabel(label: String): List<TagEntity>
 }

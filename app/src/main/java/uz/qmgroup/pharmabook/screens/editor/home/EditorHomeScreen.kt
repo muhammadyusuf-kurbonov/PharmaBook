@@ -1,6 +1,7 @@
 package uz.qmgroup.pharmabook.screens.editor.home
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -12,36 +13,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import uz.qmgroup.pharmabook.components.MedicinesList
-import uz.qmgroup.pharmabook.medicines.Medicine
+import uz.qmgroup.pharmabook.screens.destinations.EditorMedicineScreenDestination
 
+@Destination
 @Composable
 fun EditorHomeScreen(
     modifier: Modifier = Modifier,
+    navigator: DestinationsNavigator,
     editorHomeViewModel: EditorHomeViewModel = viewModel(),
-    onEdit: (Medicine) -> Unit = {},
-    onAdd: () -> Unit = {},
 ){
-
     LaunchedEffect(key1 = Unit){
         editorHomeViewModel.reloadData()
     }
 
-    Box(modifier = modifier) {
+    Box(modifier = modifier.fillMaxSize()) {
         MedicinesList(
             modifier = modifier,
             list = editorHomeViewModel.list,
             loading = editorHomeViewModel.loading,
             editorEnabled = true,
             onDelete = editorHomeViewModel::deleteMedicine,
-            onEdit = onEdit,
+            onEdit = { navigator.navigate(EditorMedicineScreenDestination(it.id)) },
         )
 
         FloatingActionButton(
             modifier = Modifier
                 .align(alignment = Alignment.BottomEnd)
                 .padding(16.dp),
-            onClick = onAdd
+            onClick = { navigator.navigate(EditorMedicineScreenDestination(-1)) }
         ) {
             Icon(imageVector = Icons.Filled.Add, contentDescription = null)
         }

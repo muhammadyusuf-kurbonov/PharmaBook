@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.medicines.Medicine
 import uz.qmgroup.pharmabook.repos.MedicinesRepo
 
-class DetailsViewModel: ViewModel() {
+class MedicineDetailsViewModel: ViewModel() {
     var medicine by mutableStateOf<Medicine?>(null)
     private set
 

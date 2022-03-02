@@ -22,6 +22,7 @@ interface MedicineDao {
     @Query("SELECT * FROM MEDICINEENTITY WHERE name LIKE :name ORDER BY name")
     suspend fun getByName(name: String): List<MedicineEntity>
 
+    @Transaction
     @Query("SELECT * FROM MEDICINEENTITY WHERE medicineId = :id")
     suspend fun getWithTags(id: Long): MedicineWithTags
 }

@@ -50,16 +50,18 @@ class EditorMedicineViewModel : ViewModel() {
     }
 
     fun updateMedicinePositionRow(row: String) {
-        try {
-            medicinePosition = medicinePosition.first to row.toInt()
-        } finally {
+        medicinePosition = try {
+            medicinePosition.first to row.toInt()
+        } catch (e: NumberFormatException){
+            medicinePosition.first to 0
         }
     }
 
     fun updateMedicinePositionColumn(col: String) {
-        try {
-            medicinePosition = col.toInt() to medicinePosition.second
-        } finally {
+        medicinePosition = try {
+            col.toInt() to medicinePosition.second
+        } catch (e: NumberFormatException) {
+            0 to medicinePosition.second
         }
     }
 

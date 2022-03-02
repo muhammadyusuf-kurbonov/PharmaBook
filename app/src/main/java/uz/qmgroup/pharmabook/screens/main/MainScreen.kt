@@ -1,36 +1,36 @@
 package uz.qmgroup.pharmabook.screens.main
 
-import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import uz.qmgroup.pharmabook.MainActivity
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.navigation.navigateTo
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.Home
+import compose.icons.fontawesomeicons.solid.Tags
 import uz.qmgroup.pharmabook.R
+import uz.qmgroup.pharmabook.screens.NavGraphs
+import uz.qmgroup.pharmabook.screens.destinations.*
+import uz.qmgroup.pharmabook.screens.navDestination
 
 @Composable
 fun MainScreen(
-    mainViewModel: MainViewModel = viewModel()
+    modifier: Modifier = Modifier,
 ) {
-
     val navHostController = rememberNavController()
-    mainViewModel.initNavController(navHostController)
-
-    BackHandler(
-        enabled = mainViewModel.currentRoute != MainActivity.SCREEN_HOME_ROUTE
-    ) {
-        mainViewModel.navigateTo(MainActivity.SCREEN_HOME_ROUTE)
-    }
+    val currentBackStackEntry by navHostController.currentBackStackEntryAsState()
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = {
@@ -39,7 +39,7 @@ fun MainScreen(
                 actions = {
                     MainScreenMenu(
                         navigate = {
-                            mainViewModel.navigateTo(it)
+                            navHostController.navigateTo(it)
                         }
                     )
                 }
@@ -47,10 +47,10 @@ fun MainScreen(
         },
         content = {
             Surface(color = MaterialTheme.colors.background) {
-                NavHost(
-                    navController = navHostController,
-                    graph = mainNavGraph(navHostController = navHostController),
-                    modifier = Modifier.padding(it)
+                DestinationsNavHost(
+                    modifier = Modifier.padding(it),
+                    navGraph = NavGraphs.root,
+                    navController = navHostController
                 )
             }
         },
@@ -58,25 +58,30 @@ fun MainScreen(
             BottomNavigation {
                 BottomNavigationItem(
                     icon = {
-                        Icon(imageVector = Icons.Default.List, contentDescription = null)
+                        Icon(
+                            imageVector = FontAwesomeIcons.Solid.Home,
+                            contentDescription = null,
+                            modifier = Modifier.height(24.dp)
+                        )
                     },
                     label = { Text(stringResource(R.string.Home)) },
-                    onClick = { mainViewModel.navigateTo(MainActivity.SCREEN_HOME_ROUTE) },
-                    selected = mainViewModel.currentRoute == MainActivity.SCREEN_HOME_ROUTE
+                    onClick = { navHostController.navigateTo(HomeScreenDestination) },
+                    selected = currentBackStackEntry?.navDestination == HomeScreenDestination
                 )
 
                 BottomNavigationItem(
                     icon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_tag_black_24dp),
-                            contentDescription = null
+                            imageVector = FontAwesomeIcons.Solid.Tags,
+                            contentDescription = null,
+                            modifier = Modifier.height(24.dp)
                         )
                     },
                     label = { Text(stringResource(R.string.Tags)) },
-                    onClick = { mainViewModel.navigateTo(MainActivity.SCREEN_TAGS_ROUTE) },
-                    selected = mainViewModel.currentRoute == MainActivity.SCREEN_TAGS_ROUTE
+                    onClick = { navHostController.navigateTo(TagsScreenDestination) },
+                    selected = currentBackStackEntry?.navDestination == TagsScreenDestination
                 )
-//
+
 //                BottomNavigationItem(
 //                    icon = {
 //                        Icon(imageVector = Icons.Default.Person, contentDescription = null)
@@ -92,7 +97,7 @@ fun MainScreen(
 
 @Composable
 fun MainScreenMenu(
-    navigate: (String) -> Unit = {}
+    navigate: (DirectionDestination) -> Unit = {}
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
 
@@ -105,15 +110,16 @@ fun MainScreenMenu(
     DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
         DropdownMenuItem(
             onClick = {
-                navigate(MainActivity.SCREEN_EDITOR_ROUTE)
+                navigate(EditorHomeScreenDestination)
                 menuExpanded = false
             }
         ) {
             Text(stringResource(R.string.Editor))
         }
+
         DropdownMenuItem(
             onClick = {
-                navigate(MainActivity.SCREEN_ABOUT_ROUTE)
+                navigate(AboutScreenDestination)
                 menuExpanded = false
             }
         ) {

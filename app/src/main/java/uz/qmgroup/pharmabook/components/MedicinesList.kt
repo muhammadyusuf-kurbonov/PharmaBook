@@ -33,11 +33,6 @@ fun MedicinesList(
             )
         } else {
             if (list.isNotEmpty()) {
-                Text(
-                    modifier = Modifier.padding(4.dp),
-                    text = stringResource(R.string.Medicines),
-                    style = MaterialTheme.typography.subtitle1
-                )
                 LazyColumn(modifier = modifier) {
                     items(list) {
                         MedicineCard(
