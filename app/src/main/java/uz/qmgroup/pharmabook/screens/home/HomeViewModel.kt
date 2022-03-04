@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.medicines.Medicine
 import uz.qmgroup.pharmabook.repos.MedicinesRepo
@@ -41,10 +42,9 @@ class HomeViewModel : ViewModel() {
                             )
                         )
                     )
-
-                    foundTags.addAll(
-                        TagsRepo().getTags()
-                    )
+                    TagsRepo().getTags().collect {
+                        foundTags.addAll(it)
+                    }
                 }
             } finally {
                 loading = false

@@ -1,82 +1,47 @@
 package uz.qmgroup.pharmabook.screens.tags
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
-import uz.qmgroup.pharmabook.components.MedicinesList
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.flow.collect
 import uz.qmgroup.pharmabook.components.TagsList
-import uz.qmgroup.pharmabook.medicines.Medicine
-import uz.qmgroup.pharmabook.repos.MedicinesRepo
 import uz.qmgroup.pharmabook.repos.TagsRepo
+import uz.qmgroup.pharmabook.screens.destinations.MedicineByTagScreenDestination
 import uz.qmgroup.pharmabook.tags.Tag
 
 @Destination
 @Composable
 fun TagsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigator: DestinationsNavigator
 ) {
-    var tagFilter by remember { mutableStateOf<String?>(null) }
-
     var loading by remember {
         mutableStateOf(true)
     }
     val list by produceState(initialValue = emptyList<Tag>(), producer = {
-        this.value = TagsRepo().getTags()
-        loading = false
+        TagsRepo().getTags().collect {
+            this.value = it
+            loading = false
+        }
     })
 
-    BackHandler(enabled = tagFilter != null) {
-        tagFilter = null
-    }
-
     if (loading) {
         LinearProgressIndicator(
             modifier = Modifier.fillMaxWidth()
         )
     } else {
-        if (tagFilter != null)
-            MedicineByTagScreen(
-                modifier = modifier,
-                tag = tagFilter!!
-            )
-        else
-            TagsList(
-                modifier = modifier,
-                list = list,
-                onClick = {
-                    tagFilter = it.label
-                }
-            )
-    }
-}
-
-@Composable
-fun MedicineByTagScreen(
-    modifier: Modifier = Modifier,
-    tag: String
-) {
-    var loading by remember {
-        mutableStateOf(true)
-    }
-    val list by produceState(initialValue = emptyList<Medicine>(), producer = {
-        this.value = MedicinesRepo().getMedicinesByTags(
-            listOf(tag)
-        )
-        loading = false
-    }, key1 = tag)
-
-
-    if (loading) {
-        LinearProgressIndicator(
-            modifier = Modifier.fillMaxWidth()
-        )
-    } else {
-        MedicinesList(
-            modifier = modifier,
+        TagsList(
+            modifier = modifier
+                .padding(16.dp, 8.dp),
             list = list,
+            onClick = {
+                navigator.navigate(MedicineByTagScreenDestination(it.label))
+            }
         )
     }
 }

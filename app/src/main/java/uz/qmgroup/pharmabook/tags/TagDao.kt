@@ -1,6 +1,7 @@
 package uz.qmgroup.pharmabook.tags
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TagDao {
@@ -17,12 +18,12 @@ interface TagDao {
     suspend fun getById(id: Long): TagEntity
 
     @Query("SELECT * FROM TagEntity")
-    suspend fun getAll(): List<TagEntity>
+    fun getAll(): Flow<List<TagEntity>>
 
     @Transaction
     @Query("SELECT * FROM TagEntity WHERE label IN (:ids)")
     suspend fun findByTags(ids: List<String>): List<TagWithMedicines>
 
     @Query("SELECT * FROM TagEntity WHERE label LIKE :label")
-    suspend fun getTagByLabel(label: String): List<TagEntity>
+    fun getTagByLabel(label: String): Flow<List<TagEntity>>
 }

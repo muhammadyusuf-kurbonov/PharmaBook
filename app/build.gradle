@@ -7,13 +7,14 @@ plugins {
 
 android {
     compileSdk 32
+    namespace "uz.qmgroup.pharmabook"
 
     defaultConfig {
         applicationId "uz.qmgroup.pharmabook"
         minSdk 23
         targetSdk 32
         versionCode 1
-        versionName "1.0.2"
+        versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

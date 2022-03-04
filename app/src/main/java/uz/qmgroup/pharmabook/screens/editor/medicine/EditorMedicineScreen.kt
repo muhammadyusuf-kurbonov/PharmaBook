@@ -3,19 +3,21 @@ package uz.qmgroup.pharmabook.screens.editor.medicine
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import uz.qmgroup.pharmabook.R
-import uz.qmgroup.pharmabook.components.TagsField
+import uz.qmgroup.pharmabook.screens.tags.TagsField
 
 @Destination
 @Composable
@@ -70,6 +72,8 @@ fun EditorMedicineScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
         }
+
+        Text(text = stringResource(id = R.string.Tags), style = MaterialTheme.typography.caption, fontWeight = FontWeight.Bold)
 
         TagsField(
             modifier = Modifier
