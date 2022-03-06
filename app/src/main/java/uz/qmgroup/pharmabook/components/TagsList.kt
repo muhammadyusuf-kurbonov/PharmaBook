@@ -3,16 +3,15 @@ package uz.qmgroup.pharmabook.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.Tag
 import uz.qmgroup.pharmabook.R
 import uz.qmgroup.pharmabook.tags.Tag
 
@@ -21,15 +20,15 @@ import uz.qmgroup.pharmabook.tags.Tag
 fun TagsList(
     modifier: Modifier = Modifier,
     list: List<Tag>,
-    onClick: (Tag) -> Unit
-){
+    onClick: (Tag) -> Unit,
+    footer: @Composable () -> Unit = {},
+) {
     if (list.isNotEmpty()) {
-        LazyColumn(modifier = modifier){
+        LazyColumn(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
             items(list) {
                 Card(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
+                        .fillMaxWidth(),
                     elevation = 8.dp,
                     onClick = {
                         onClick(it)
@@ -38,22 +37,31 @@ fun TagsList(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(8.dp)
+                            .padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Icon(painter = painterResource(id = R.drawable.ic_tag_black_24dp),
-                            contentDescription = null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = it.label)
+                        Icon(
+                            imageVector = FontAwesomeIcons.Solid.Tag,
+                            contentDescription = null,
+                            modifier = Modifier.height(24.dp),
+                            tint = MaterialTheme.colors.primary
+                        )
+                        Text(text = it.label, style = MaterialTheme.typography.body1)
                     }
                 }
             }
+            item {
+                footer()
+            }
         }
-    }else{
-        Box(modifier = modifier){
+    } else {
+        Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.CenterHorizontally),
                 text = stringResource(id = R.string.No_tags)
             )
+            footer()
         }
     }
 }

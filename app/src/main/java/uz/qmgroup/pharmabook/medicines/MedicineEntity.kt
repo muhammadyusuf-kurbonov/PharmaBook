@@ -1,6 +1,7 @@
 package uz.qmgroup.pharmabook.medicines
 
 import androidx.annotation.Keep
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,10 +12,16 @@ data class MedicineEntity(
     val refId: String,
     val name: String,
     val vendor: String,
+    @ColumnInfo(defaultValue = "0") val positionColumn: Int,
+    @ColumnInfo(defaultValue = "0") val positionRow: Int,
+    @ColumnInfo(defaultValue = "") val diagnoses: String
 ){
     fun toMedicine() = Medicine(
         id = medicineId,
         name = name,
-        vendor = vendor
+        vendor = vendor,
+        positionColumn = positionColumn,
+        positionRow = positionRow,
+        diagnoses = diagnoses.split(";")
     )
 }

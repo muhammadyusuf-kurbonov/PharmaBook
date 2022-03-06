@@ -1,7 +1,6 @@
 package uz.qmgroup.pharmabook.repos
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import uz.qmgroup.pharmabook.database.AppDatabase
@@ -60,21 +59,14 @@ class MedicinesRepo {
                 }
                 launch {
                     medicineTagCrossRefDao().deleteAllTagsOfMedicine(medicine.id)
-                    val tagIds = medicine.tags?.map {
-                        async {
-                            val tagId = tagDao().insert(it.toEntity())
-                            tagId
-                        }
-                    }?.map {
-                        it.await()
-                    }
+                    val tagIds = medicine.tags?.map { it.id }
 
                     tagIds?.let {
                         medicineTagCrossRefDao().insertAll(
                             *tagIds.map {
                                 MedicineTagCrossRef(
                                     medicineId = medicine.id,
-                                    tagId = it.toInt()
+                                    tagId = it
                                 )
                             }.toTypedArray()
                         )

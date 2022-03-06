@@ -6,12 +6,18 @@ data class Medicine(
     val id: Long,
     val name: String,
     val vendor: String,
+    val positionColumn: Int,
+    val positionRow: Int,
     val tags: List<Tag>? = null,
+    val diagnoses: List<String>
 ){
     fun toEntity() = MedicineEntity(
         medicineId = id,
         name = name,
         vendor = vendor,
-        refId = ""
+        refId = "",
+        positionColumn = positionColumn,
+        positionRow = positionRow,
+        diagnoses = diagnoses.joinToString(";")
     )
 }
