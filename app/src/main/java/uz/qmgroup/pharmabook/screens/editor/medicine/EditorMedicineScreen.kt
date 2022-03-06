@@ -3,22 +3,20 @@ package uz.qmgroup.pharmabook.screens.editor.medicine
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import uz.qmgroup.pharmabook.R
-import uz.qmgroup.pharmabook.components.AutoCompleteMultiSelect
 import uz.qmgroup.pharmabook.components.OptionsList
+import uz.qmgroup.pharmabook.components.Section
 
 @Destination
 @Composable
@@ -74,24 +72,31 @@ fun EditorMedicineScreen(
             )
         }
 
-        Text(text = stringResource(id = R.string.diagnoses), style = MaterialTheme.typography.caption, fontWeight = FontWeight.Bold)
-
-        OptionsList(
+        Section(
             modifier = Modifier.fillMaxWidth(),
-            items = editorMedicineViewModel.medicineDiagnoses,
-            addItem = { editorMedicineViewModel.medicineDiagnoses.add(it) },
-            deleteItem = { editorMedicineViewModel.medicineDiagnoses.remove(it) }
-        )
+            title = stringResource(id = R.string.diagnoses)
+        ) {
+            OptionsList(
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = "Diagnose",
+                items = editorMedicineViewModel.medicineDiagnoses,
+                addItem = { editorMedicineViewModel.medicineDiagnoses.add(it.trim()) },
+                deleteItem = { editorMedicineViewModel.medicineDiagnoses.remove(it) }
+            )
+        }
 
-        Text(text = stringResource(id = R.string.Tags), style = MaterialTheme.typography.caption, fontWeight = FontWeight.Bold)
-
-        AutoCompleteMultiSelect(
+        Section(
             modifier = Modifier.fillMaxWidth(),
-            allItems = editorMedicineViewModel.allTags.map { it.label },
-            selected = editorMedicineViewModel.medicineTags.map { it.label },
-            select = editorMedicineViewModel::addTag,
-            deselect = editorMedicineViewModel::removeTag
-        )
+            title = stringResource(id = R.string.Tags)
+        ) {
+            OptionsList(
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = "Tag",
+                items = editorMedicineViewModel.medicineTags,
+                addItem = editorMedicineViewModel::addTag,
+                deleteItem = editorMedicineViewModel::removeTag
+            )
+        }
 
         Row(
             modifier = Modifier

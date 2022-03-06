@@ -60,7 +60,7 @@ fun HomeScreen(
                     )
                 },
                 singleLine = true,
-                shape = RoundedCornerShape(99.dp),
+                shape = RoundedCornerShape(8.dp),
                 textStyle = MaterialTheme.typography.body2
             )
 

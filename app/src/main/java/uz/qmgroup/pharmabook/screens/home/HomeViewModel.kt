@@ -6,12 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.medicines.Medicine
 import uz.qmgroup.pharmabook.repos.MedicinesRepo
-import uz.qmgroup.pharmabook.repos.TagsRepo
-import uz.qmgroup.pharmabook.tags.Tag
 
 class HomeViewModel : ViewModel() {
     var loading by mutableStateOf(false)
@@ -20,8 +17,6 @@ class HomeViewModel : ViewModel() {
     var tagSearching by mutableStateOf(false)
         private set
 
-    var foundTags = mutableStateListOf<Tag>()
-
     val searchResults = mutableStateListOf<Medicine>()
 
     fun startSearch(searchPattern: String) {
@@ -29,23 +24,12 @@ class HomeViewModel : ViewModel() {
             try {
                 loading = true
                 searchResults.clear()
-                searchResults.addAll(MedicinesRepo().search(searchPattern))
-                val isTag = searchPattern.startsWith("#")
-                tagSearching = isTag
-                if (isTag) {
-                    searchResults.addAll(
-                        MedicinesRepo().getMedicinesByTags(
-                            listOf(
-                                searchPattern.drop(
-                                    1
-                                )
-                            )
-                        )
-                    )
-                    TagsRepo().getTags().collect {
-                        foundTags.addAll(it)
-                    }
-                }
+                if (searchPattern.startsWith("#"))
+                    searchResults
+                        .addAll(MedicinesRepo().getMedicinesByTags(listOf(searchPattern.drop(1))))
+                else
+                    searchResults
+                        .addAll(MedicinesRepo().searchMedicineByName(searchPattern))
             } finally {
                 loading = false
             }

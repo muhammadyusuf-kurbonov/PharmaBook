@@ -3,12 +3,9 @@ package uz.qmgroup.pharmabook.screens.editor.medicine
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.medicines.Medicine
 import uz.qmgroup.pharmabook.repos.MedicinesRepo
-import uz.qmgroup.pharmabook.repos.TagsRepo
-import uz.qmgroup.pharmabook.tags.Tag
 import java.util.*
 
 class EditorMedicineViewModel : ViewModel() {
@@ -24,10 +21,7 @@ class EditorMedicineViewModel : ViewModel() {
     var medicinePosition by mutableStateOf(0 to 0)
         private set
 
-    var allTags by mutableStateOf(emptyList<Tag>())
-        private set
-
-    val medicineTags = mutableStateListOf<Tag>()
+    val medicineTags = mutableStateListOf<String>()
 
     val medicineDiagnoses = mutableStateListOf<String>()
 
@@ -35,9 +29,6 @@ class EditorMedicineViewModel : ViewModel() {
 
     fun loadMedicine(medicineId: Long) {
         viewModelScope.launch {
-            TagsRepo().getTags().collect {
-                allTags = it
-            }
             medicine = MedicinesRepo().getMedicine(medicineId)
             if (medicine != null){
                 val foundMedicine = medicine!!
@@ -76,20 +67,13 @@ class EditorMedicineViewModel : ViewModel() {
         }
     }
 
-    fun addTag(label: String){
-        val tag = allTags.find { it.label == label }
-        if (tag != null)
+    fun addTag(tag: String){
+        if (tag.isNotEmpty())
             medicineTags.add(tag)
-        else
-            throw IllegalStateException("Tag cannot be found")
     }
 
-    fun removeTag(label: String){
-        val tag = medicineTags.find { it.label == label }
-        if (tag != null)
-            medicineTags.remove(tag)
-        else
-            throw IllegalStateException("Tag cannot be found")
+    fun removeTag(tag: String){
+        medicineTags.remove(tag)
     }
 
     @Composable

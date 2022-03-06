@@ -13,14 +13,13 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Tag
 import uz.qmgroup.pharmabook.R
-import uz.qmgroup.pharmabook.tags.Tag
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TagsList(
     modifier: Modifier = Modifier,
-    list: List<Tag>,
-    onClick: (Tag) -> Unit,
+    list: List<String>,
+    onClick: (String) -> Unit,
     footer: @Composable () -> Unit = {},
 ) {
     if (list.isNotEmpty()) {
@@ -47,7 +46,7 @@ fun TagsList(
                             modifier = Modifier.height(24.dp),
                             tint = MaterialTheme.colors.primary
                         )
-                        Text(text = it.label, style = MaterialTheme.typography.body1)
+                        Text(text = it, style = MaterialTheme.typography.body1)
                     }
                 }
             }

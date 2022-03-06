@@ -4,7 +4,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import uz.qmgroup.pharmabook.database.AppDatabase
-import uz.qmgroup.pharmabook.database.MedicineTagCrossRef
 import uz.qmgroup.pharmabook.medicines.Medicine
 
 class MedicinesRepo {
@@ -19,13 +18,8 @@ class MedicinesRepo {
 
     suspend fun getMedicine(id: Long) = withContext(Dispatchers.IO) {
         AppDatabase.Instance?.run {
-            val medicineEntity = medicineDao().getWithTags(id)
-            val medicine = medicineEntity.medicine.toMedicine()
-            return@run medicine.copy(
-                tags = medicineEntity.tags.map {
-                    it.toTag()
-                }
-            )
+            val medicineEntity = medicineDao().getById(id)
+            return@run medicineEntity.toMedicine()
         }
     }
 
@@ -33,19 +27,7 @@ class MedicinesRepo {
         AppDatabase.Instance?.apply {
             runInTransaction {
                 launch(Dispatchers.IO) {
-                    val medicineId =
-                        medicineDao().insert(medicine.toEntity())
-
-                    val tagIds = medicine.tags?.map { it.id } ?: emptyList()
-
-                    medicineTagCrossRefDao().insertAll(
-                        *tagIds.map {
-                            MedicineTagCrossRef(
-                                medicineId = medicineId,
-                                tagId = it
-                            )
-                        }.toTypedArray()
-                    )
+                    medicineDao().insert(medicine.toEntity())
                 }
             }
         }
@@ -57,21 +39,6 @@ class MedicinesRepo {
                 launch(Dispatchers.IO) {
                     medicineDao().update(medicine.toEntity())
                 }
-                launch {
-                    medicineTagCrossRefDao().deleteAllTagsOfMedicine(medicine.id)
-                    val tagIds = medicine.tags?.map { it.id }
-
-                    tagIds?.let {
-                        medicineTagCrossRefDao().insertAll(
-                            *tagIds.map {
-                                MedicineTagCrossRef(
-                                    medicineId = medicine.id,
-                                    tagId = it
-                                )
-                            }.toTypedArray()
-                        )
-                    }
-                }
             }
         }
     }
@@ -82,9 +49,6 @@ class MedicinesRepo {
                 launch {
                     medicineDao().delete(medicine.id)
                 }
-                launch {
-                    medicineTagCrossRefDao().deleteAllTagsOfMedicine(medicine.id)
-                }
             }
         }
     }
@@ -92,25 +56,24 @@ class MedicinesRepo {
     suspend fun getMedicinesByTags(tags: List<String>): List<Medicine> =
         withContext(Dispatchers.IO) {
             AppDatabase.Instance?.run {
-                val searchResult = tagDao().findByTags(tags)
-                searchResult.flatMap {
-                    it.medicines.map { entity -> entity.toMedicine() }
+                if (tags.isEmpty())
+                    return@run getMedicines()
+                val searchResult = medicineDao().getByTag(tags[0]).map {
+                    it.toMedicine()
+                }
+                return@run searchResult.filter {
+                    it.tags?.containsAll(tags) ?: false
                 }
             } ?: emptyList()
         }
 
     suspend fun searchMedicineByName(name: String): List<Medicine> = withContext(Dispatchers.IO) {
         AppDatabase.Instance?.run {
+            if (name.isEmpty())
+                return@run getMedicines()
             medicineDao().getByName("%$name%").map {
                 it.toMedicine()
             }
         } ?: emptyList()
-    }
-
-
-    suspend fun search(searchPattern: String): List<Medicine> {
-        if (searchPattern.isEmpty())
-            return getMedicines()
-        return searchMedicineByName(searchPattern)
     }
 }

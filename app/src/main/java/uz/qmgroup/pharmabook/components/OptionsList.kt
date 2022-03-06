@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun OptionsList(
     modifier: Modifier = Modifier,
+    placeholder: String = "",
     items: List<String>,
     addItem: (String) -> Unit,
     deleteItem: (String) -> Unit
@@ -29,7 +30,7 @@ fun OptionsList(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(0.dp, 4.dp),
+                    .padding(8.dp, 4.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -56,6 +57,7 @@ fun OptionsList(
                 OutlinedTextField(
                     modifier = Modifier.weight(1f),
                     value = newOption,
+                    placeholder = { Text(text = placeholder)},
                     onValueChange = { newOption = it },
                     textStyle = MaterialTheme.typography.body1
                 )
