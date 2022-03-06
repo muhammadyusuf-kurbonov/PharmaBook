@@ -1,8 +1,8 @@
 package uz.qmgroup.pharmabook.screens.details
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -12,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -29,6 +30,8 @@ fun MedicineDetailsScreen(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         LaunchedEffect(key1 = Unit) {
             medicineDetailsViewModel.loadData(medicineId)
@@ -55,6 +58,22 @@ fun MedicineDetailsScreen(
                 label = stringResource(R.string.position),
                 text = "${medicine?.positionRow} / ${medicine?.positionColumn}"
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Diagnoses",
+                style = MaterialTheme.typography.subtitle1,
+                fontWeight = FontWeight.Bold
+            )
+
+            medicine?.diagnoses?.forEach {
+                Text(
+                    modifier = Modifier.padding(8.dp, 0.dp),
+                    text = it,
+                    style = MaterialTheme.typography.body1,
+                )
+            }
         } else {
             Text(text = stringResource(R.string.medicine_not_found))
         }

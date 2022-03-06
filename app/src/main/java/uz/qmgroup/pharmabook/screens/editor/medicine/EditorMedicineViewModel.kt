@@ -24,6 +24,8 @@ class EditorMedicineViewModel : ViewModel() {
 
     val medicineTags = mutableStateListOf<Tag>()
 
+    val medicineDiagnoses = mutableStateListOf<String>()
+
     private var saving by mutableStateOf(false)
 
     fun loadMedicine(medicineId: Long) {
@@ -35,6 +37,7 @@ class EditorMedicineViewModel : ViewModel() {
                 medicineVendor = foundMedicine.vendor
                 medicinePosition = foundMedicine.positionColumn to foundMedicine.positionRow
                 medicineTags.addAll(foundMedicine.tags ?: emptyList())
+                medicineDiagnoses.addAll(foundMedicine.diagnoses)
             }
         }
     }
@@ -67,7 +70,10 @@ class EditorMedicineViewModel : ViewModel() {
 
     @Composable
     fun isSaveButtonEnabled()
-        = medicineName.isNotEmpty() && medicineVendor.isNotEmpty() && !saving
+        = medicineName.isNotEmpty()
+            && medicineVendor.isNotEmpty()
+            && medicineDiagnoses.isNotEmpty()
+            && !saving
 
     fun save(){
         saving = true
@@ -77,7 +83,8 @@ class EditorMedicineViewModel : ViewModel() {
             vendor = medicineVendor,
             positionColumn = medicinePosition.first,
             positionRow = medicinePosition.second,
-            tags = medicineTags.toList()
+            tags = medicineTags.toList(),
+            diagnoses = medicineDiagnoses
         )
         viewModelScope.launch {
             if (medicine == null)

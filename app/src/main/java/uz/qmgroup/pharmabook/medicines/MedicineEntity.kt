@@ -14,12 +14,14 @@ data class MedicineEntity(
     val vendor: String,
     @ColumnInfo(defaultValue = "0") val positionColumn: Int,
     @ColumnInfo(defaultValue = "0") val positionRow: Int,
+    @ColumnInfo(defaultValue = "") val diagnoses: String
 ){
     fun toMedicine() = Medicine(
         id = medicineId,
         name = name,
         vendor = vendor,
         positionColumn = positionColumn,
-        positionRow = positionRow
+        positionRow = positionRow,
+        diagnoses = diagnoses.split(";")
     )
 }

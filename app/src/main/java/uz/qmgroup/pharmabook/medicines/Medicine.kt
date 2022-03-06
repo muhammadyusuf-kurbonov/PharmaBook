@@ -9,6 +9,7 @@ data class Medicine(
     val positionColumn: Int,
     val positionRow: Int,
     val tags: List<Tag>? = null,
+    val diagnoses: List<String>
 ){
     fun toEntity() = MedicineEntity(
         medicineId = id,
@@ -17,5 +18,6 @@ data class Medicine(
         refId = "",
         positionColumn = positionColumn,
         positionRow = positionRow,
+        diagnoses = diagnoses.joinToString(";")
     )
 }

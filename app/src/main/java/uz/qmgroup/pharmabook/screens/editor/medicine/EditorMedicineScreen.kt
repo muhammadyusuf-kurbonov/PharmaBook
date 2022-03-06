@@ -17,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import uz.qmgroup.pharmabook.R
+import uz.qmgroup.pharmabook.components.OptionsList
 import uz.qmgroup.pharmabook.screens.tags.TagsField
 
 @Destination
@@ -72,6 +73,15 @@ fun EditorMedicineScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
         }
+
+        Text(text = stringResource(id = R.string.Tags), style = MaterialTheme.typography.caption, fontWeight = FontWeight.Bold)
+
+        OptionsList(
+            modifier = Modifier.fillMaxWidth(),
+            items = editorMedicineViewModel.medicineDiagnoses,
+            addItem = { editorMedicineViewModel.medicineDiagnoses.add(it) },
+            deleteItem = { editorMedicineViewModel.medicineDiagnoses.remove(it) }
+        )
 
         Text(text = stringResource(id = R.string.Tags), style = MaterialTheme.typography.caption, fontWeight = FontWeight.Bold)
 
