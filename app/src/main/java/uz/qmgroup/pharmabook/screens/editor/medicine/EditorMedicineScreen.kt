@@ -17,8 +17,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import uz.qmgroup.pharmabook.R
+import uz.qmgroup.pharmabook.components.AutoCompleteMultiSelect
 import uz.qmgroup.pharmabook.components.OptionsList
-import uz.qmgroup.pharmabook.screens.tags.TagsField
 
 @Destination
 @Composable
@@ -74,7 +74,7 @@ fun EditorMedicineScreen(
             )
         }
 
-        Text(text = stringResource(id = R.string.Tags), style = MaterialTheme.typography.caption, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(id = R.string.diagnoses), style = MaterialTheme.typography.caption, fontWeight = FontWeight.Bold)
 
         OptionsList(
             modifier = Modifier.fillMaxWidth(),
@@ -85,16 +85,12 @@ fun EditorMedicineScreen(
 
         Text(text = stringResource(id = R.string.Tags), style = MaterialTheme.typography.caption, fontWeight = FontWeight.Bold)
 
-        TagsField(
-            modifier = Modifier
-                .fillMaxWidth(),
-            tags = editorMedicineViewModel.medicineTags,
-            addTag = {
-                editorMedicineViewModel.medicineTags.add(it)
-            },
-            removeTag = {
-                editorMedicineViewModel.medicineTags.remove(it)
-            }
+        AutoCompleteMultiSelect(
+            modifier = Modifier.fillMaxWidth(),
+            allItems = editorMedicineViewModel.allTags.map { it.label },
+            selected = editorMedicineViewModel.medicineTags.map { it.label },
+            select = editorMedicineViewModel::addTag,
+            deselect = editorMedicineViewModel::removeTag
         )
 
         Row(

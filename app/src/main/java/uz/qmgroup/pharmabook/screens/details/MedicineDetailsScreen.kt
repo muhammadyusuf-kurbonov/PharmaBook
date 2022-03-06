@@ -62,7 +62,7 @@ fun MedicineDetailsScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Diagnoses",
+                text = stringResource(R.string.diagnoses),
                 style = MaterialTheme.typography.subtitle1,
                 fontWeight = FontWeight.Bold
             )

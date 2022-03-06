@@ -24,4 +24,5 @@
     <string name="position">Расположение</string>
     <string name="medicine_not_found">Лекарство не найдено</string>
     <string name="select_tag">Выберите тег</string>
+    <string name="diagnoses">Предназначения</string>
 </resources>
