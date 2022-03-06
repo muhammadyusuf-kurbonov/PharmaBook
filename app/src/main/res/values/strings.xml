@@ -25,4 +25,6 @@
     <string name="select_tag">Select tag</string>
     <string name="create_tag">Create tag \"%1s\"</string>
     <string name="diagnoses">Diagnoses</string>
+    <string name="Tag">Tag</string>
+    <string name="Diagnose">Diagnose</string>
 </resources>

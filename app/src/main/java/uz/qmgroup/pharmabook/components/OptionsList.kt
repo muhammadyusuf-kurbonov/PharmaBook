@@ -1,11 +1,6 @@
 package uz.qmgroup.pharmabook.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -25,8 +20,8 @@ fun OptionsList(
 ) {
     var newOption by remember { mutableStateOf("") }
 
-    LazyColumn(modifier = modifier) {
-        items(items) {
+    Column(modifier = modifier) {
+        items.forEach {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -46,25 +41,25 @@ fun OptionsList(
                 }
             }
         }
-        item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedTextField(
-                    modifier = Modifier.weight(1f),
-                    value = newOption,
-                    placeholder = { Text(text = placeholder)},
-                    onValueChange = { newOption = it },
-                    textStyle = MaterialTheme.typography.body1
-                )
-                IconButton(onClick = { addItem(newOption); newOption = "" }) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "")
-                }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp, 4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                modifier = Modifier.weight(1f),
+                value = newOption,
+                placeholder = { Text(text = placeholder) },
+                onValueChange = { newOption = it },
+                textStyle = MaterialTheme.typography.body1
+            )
+            IconButton(onClick = { addItem(newOption); newOption = "" }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "")
             }
         }
+
     }
 }

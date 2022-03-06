@@ -1,7 +1,9 @@
 package uz.qmgroup.pharmabook.screens.editor.medicine
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -31,7 +33,12 @@ fun EditorMedicineScreen(
             editorMedicineViewModel.loadMedicine(medicineId)
     }
 
-    Column(modifier = modifier.padding(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -78,7 +85,7 @@ fun EditorMedicineScreen(
         ) {
             OptionsList(
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = "Diagnose",
+                placeholder = stringResource(R.string.Diagnose),
                 items = editorMedicineViewModel.medicineDiagnoses,
                 addItem = { editorMedicineViewModel.medicineDiagnoses.add(it.trim()) },
                 deleteItem = { editorMedicineViewModel.medicineDiagnoses.remove(it) }
@@ -91,7 +98,7 @@ fun EditorMedicineScreen(
         ) {
             OptionsList(
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = "Tag",
+                placeholder = stringResource(R.string.Tag),
                 items = editorMedicineViewModel.medicineTags,
                 addItem = editorMedicineViewModel::addTag,
                 deleteItem = editorMedicineViewModel::removeTag

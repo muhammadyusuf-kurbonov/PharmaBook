@@ -58,11 +58,8 @@ class MedicinesRepo {
             AppDatabase.Instance?.run {
                 if (tags.isEmpty())
                     return@run getMedicines()
-                val searchResult = medicineDao().getByTag(tags[0]).map {
+                return@run medicineDao().getByTag("%${tags[0]}%").map {
                     it.toMedicine()
-                }
-                return@run searchResult.filter {
-                    it.tags?.containsAll(tags) ?: false
                 }
             } ?: emptyList()
         }
