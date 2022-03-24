@@ -25,11 +25,22 @@ class EditorMedicineViewModel : ViewModel() {
 
     val medicineDiagnoses = mutableStateListOf<String>()
 
+    val alternativeMedicines = mutableStateListOf<Medicine>()
+
+    val allMedicines = mutableStateListOf<Medicine>()
+
     private var saving by mutableStateOf(false)
+
+    fun loadMedicines(){
+        viewModelScope.launch {
+            allMedicines.addAll(MedicinesRepo().getMedicines())
+        }
+    }
 
     fun loadMedicine(medicineId: Long) {
         viewModelScope.launch {
-            medicine = MedicinesRepo().getMedicine(medicineId)
+            val medicinesRepo = MedicinesRepo()
+            medicine = medicinesRepo.getMedicine(medicineId)
             if (medicine != null){
                 val foundMedicine = medicine!!
                 medicineName = foundMedicine.name
@@ -76,6 +87,22 @@ class EditorMedicineViewModel : ViewModel() {
         medicineTags.remove(tag)
     }
 
+    fun addAlternative(medicineName: String){
+        val medicine = allMedicines.find { it.name == medicineName }
+        if (medicine != null)
+            alternativeMedicines.add(medicine)
+        else
+            throw IllegalStateException("Medicine not found")
+    }
+
+    fun removeAlternative(medicineName: String){
+        val medicine = alternativeMedicines.find { it.name == medicineName }
+        if (medicine != null)
+            alternativeMedicines.remove(medicine)
+        else
+            throw IllegalStateException("Medicine not found")
+    }
+
     @Composable
     fun isSaveButtonEnabled()
         = medicineName.isNotEmpty()
@@ -92,7 +119,8 @@ class EditorMedicineViewModel : ViewModel() {
             positionColumn = medicinePosition.first,
             positionRow = medicinePosition.second,
             tags = medicineTags.toList(),
-            diagnoses = medicineDiagnoses
+            diagnoses = medicineDiagnoses,
+            alternativeIds = alternativeMedicines.map { it.id }
         )
         viewModelScope.launch {
             if (medicine == null)

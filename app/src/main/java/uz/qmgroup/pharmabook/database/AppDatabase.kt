@@ -12,10 +12,11 @@ import uz.qmgroup.pharmabook.medicines.MedicineEntity
     entities = [
         MedicineEntity::class
     ],
-    version = 3,
+    version = 4,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 3, spec = Migration2_3::class),
+        AutoMigration(from = 3, to = 4),
     ]
 )
 abstract class AppDatabase: RoomDatabase(){

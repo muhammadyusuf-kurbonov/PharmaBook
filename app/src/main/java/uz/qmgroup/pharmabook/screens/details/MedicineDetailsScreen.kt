@@ -74,6 +74,22 @@ fun MedicineDetailsScreen(
                     style = MaterialTheme.typography.body1,
                 )
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = stringResource(R.string.alternatives),
+                style = MaterialTheme.typography.subtitle1,
+                fontWeight = FontWeight.Bold
+            )
+
+            medicine?.alternatives?.forEach {
+                Text(
+                    modifier = Modifier.padding(8.dp, 0.dp),
+                    text = it.name,
+                    style = MaterialTheme.typography.body1,
+                )
+            }
         } else {
             Text(text = stringResource(R.string.medicine_not_found))
         }

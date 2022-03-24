@@ -8,6 +8,8 @@ data class Medicine(
     val positionRow: Int,
     val tags: List<String>? = null,
     val diagnoses: List<String>,
+    val alternativeIds: List<Long>,
+    val alternatives: List<Medicine>? = null
 ){
     fun toEntity() = MedicineEntity(
         medicineId = id,
@@ -16,6 +18,7 @@ data class Medicine(
         positionColumn = positionColumn,
         positionRow = positionRow,
         diagnoses = diagnoses.joinToString(";"),
-        tags = tags?.joinToString(";") ?: ""
+        tags = tags?.joinToString(";") ?: "",
+        alternativeIds = alternativeIds.joinToString(";")
     )
 }

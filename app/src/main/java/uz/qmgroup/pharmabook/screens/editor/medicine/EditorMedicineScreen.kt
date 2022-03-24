@@ -17,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import uz.qmgroup.pharmabook.R
+import uz.qmgroup.pharmabook.components.AutoCompleteMultiSelect
 import uz.qmgroup.pharmabook.components.OptionsList
 import uz.qmgroup.pharmabook.components.Section
 
@@ -31,6 +32,7 @@ fun EditorMedicineScreen(
     LaunchedEffect(key1 = medicineId) {
         if (medicineId > -1)
             editorMedicineViewModel.loadMedicine(medicineId)
+        editorMedicineViewModel.loadMedicines()
     }
 
     Column(
@@ -85,7 +87,7 @@ fun EditorMedicineScreen(
         ) {
             OptionsList(
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = stringResource(R.string.Diagnose),
+                placeholder = stringResource(R.string.new_diagnose),
                 items = editorMedicineViewModel.medicineDiagnoses,
                 addItem = { editorMedicineViewModel.medicineDiagnoses.add(it.trim()) },
                 deleteItem = { editorMedicineViewModel.medicineDiagnoses.remove(it) }
@@ -98,10 +100,23 @@ fun EditorMedicineScreen(
         ) {
             OptionsList(
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = stringResource(R.string.Tag),
+                placeholder = stringResource(R.string.new_tag),
                 items = editorMedicineViewModel.medicineTags,
                 addItem = editorMedicineViewModel::addTag,
                 deleteItem = editorMedicineViewModel::removeTag
+            )
+        }
+
+        Section(
+            modifier = Modifier.fillMaxWidth(),
+            title = stringResource(R.string.alternatives)
+        ) {
+            AutoCompleteMultiSelect(
+                modifier = Modifier.fillMaxWidth(),
+                allItems = editorMedicineViewModel.allMedicines.map { it.name },
+                selected = editorMedicineViewModel.alternativeMedicines.map { it.name },
+                select = editorMedicineViewModel::addAlternative,
+                deselect = editorMedicineViewModel::removeAlternative
             )
         }
 

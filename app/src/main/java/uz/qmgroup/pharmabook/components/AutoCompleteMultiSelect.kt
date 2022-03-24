@@ -32,16 +32,21 @@ fun AutoCompleteMultiSelect(
             }
         }
 
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = query,
-            onValueChange = { query = it }
-        )
+        Column(modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = query,
+                onValueChange = { query = it }
+            )
+            val filteredItems = allItems.filter { !selected.contains(it) and it.contains(query, ignoreCase = true) }
 
-        DropdownMenu(expanded = query.isNotEmpty(), onDismissRequest = {}) {
-            allItems.filter { !selected.contains(it) and it.contains(query) }.forEach {
-                DropdownMenuItem(onClick = { select(it) }) {
-                    Text(text = it)
+            if (filteredItems.isNotEmpty()) {
+                DropdownMenu(expanded = query.isNotEmpty(), onDismissRequest = {}) {
+                    filteredItems.forEach {
+                        DropdownMenuItem(onClick = { select(it) }) {
+                            Text(text = it)
+                        }
+                    }
                 }
             }
         }

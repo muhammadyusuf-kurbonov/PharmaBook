@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "05ee12e02477b1a21758d8408ffe3d43",
+    "identityHash": "4d883c88c103241fb25c37cbead23811",
     "entities": [
       {
         "tableName": "MedicineEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`medicineId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `vendor` TEXT NOT NULL, `positionColumn` INTEGER NOT NULL DEFAULT 0, `positionRow` INTEGER NOT NULL DEFAULT 0, `diagnoses` TEXT NOT NULL DEFAULT '', `tags` TEXT NOT NULL DEFAULT '')",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`medicineId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `vendor` TEXT NOT NULL, `positionColumn` INTEGER NOT NULL DEFAULT 0, `positionRow` INTEGER NOT NULL DEFAULT 0, `diagnoses` TEXT NOT NULL DEFAULT '', `tags` TEXT NOT NULL DEFAULT '', `alternativeIds` TEXT NOT NULL DEFAULT '')",
         "fields": [
           {
             "fieldPath": "medicineId",
@@ -53,6 +53,13 @@
             "affinity": "TEXT",
             "notNull": true,
             "defaultValue": "''"
+          },
+          {
+            "fieldPath": "alternativeIds",
+            "columnName": "alternativeIds",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           }
         ],
         "primaryKey": {
@@ -80,7 +87,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '05ee12e02477b1a21758d8408ffe3d43')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4d883c88c103241fb25c37cbead23811')"
     ]
   }
 }
