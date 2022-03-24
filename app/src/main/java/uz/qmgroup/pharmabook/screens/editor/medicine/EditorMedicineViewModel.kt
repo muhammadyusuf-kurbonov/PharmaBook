@@ -3,12 +3,9 @@ package uz.qmgroup.pharmabook.screens.editor.medicine
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.medicines.Medicine
 import uz.qmgroup.pharmabook.repos.MedicinesRepo
-import uz.qmgroup.pharmabook.repos.TagsRepo
-import uz.qmgroup.pharmabook.tags.Tag
 import java.util.*
 
 class EditorMedicineViewModel : ViewModel() {
@@ -24,21 +21,26 @@ class EditorMedicineViewModel : ViewModel() {
     var medicinePosition by mutableStateOf(0 to 0)
         private set
 
-    var allTags by mutableStateOf(emptyList<Tag>())
-        private set
-
-    val medicineTags = mutableStateListOf<Tag>()
+    val medicineTags = mutableStateListOf<String>()
 
     val medicineDiagnoses = mutableStateListOf<String>()
 
+    val alternativeMedicines = mutableStateListOf<Medicine>()
+
+    val allMedicines = mutableStateListOf<Medicine>()
+
     private var saving by mutableStateOf(false)
+
+    fun loadMedicines(){
+        viewModelScope.launch {
+            allMedicines.addAll(MedicinesRepo().getMedicines())
+        }
+    }
 
     fun loadMedicine(medicineId: Long) {
         viewModelScope.launch {
-            TagsRepo().getTags().collect {
-                allTags = it
-            }
-            medicine = MedicinesRepo().getMedicine(medicineId)
+            val medicinesRepo = MedicinesRepo()
+            medicine = medicinesRepo.getMedicine(medicineId)
             if (medicine != null){
                 val foundMedicine = medicine!!
                 medicineName = foundMedicine.name
@@ -76,20 +78,29 @@ class EditorMedicineViewModel : ViewModel() {
         }
     }
 
-    fun addTag(label: String){
-        val tag = allTags.find { it.label == label }
-        if (tag != null)
+    fun addTag(tag: String){
+        if (tag.isNotEmpty())
             medicineTags.add(tag)
-        else
-            throw IllegalStateException("Tag cannot be found")
     }
 
-    fun removeTag(label: String){
-        val tag = medicineTags.find { it.label == label }
-        if (tag != null)
-            medicineTags.remove(tag)
+    fun removeTag(tag: String){
+        medicineTags.remove(tag)
+    }
+
+    fun addAlternative(medicineName: String){
+        val medicine = allMedicines.find { it.name == medicineName }
+        if (medicine != null)
+            alternativeMedicines.add(medicine)
         else
-            throw IllegalStateException("Tag cannot be found")
+            throw IllegalStateException("Medicine not found")
+    }
+
+    fun removeAlternative(medicineName: String){
+        val medicine = alternativeMedicines.find { it.name == medicineName }
+        if (medicine != null)
+            alternativeMedicines.remove(medicine)
+        else
+            throw IllegalStateException("Medicine not found")
     }
 
     @Composable
@@ -108,7 +119,8 @@ class EditorMedicineViewModel : ViewModel() {
             positionColumn = medicinePosition.first,
             positionRow = medicinePosition.second,
             tags = medicineTags.toList(),
-            diagnoses = medicineDiagnoses
+            diagnoses = medicineDiagnoses,
+            alternativeIds = alternativeMedicines.map { it.id }
         )
         viewModelScope.launch {
             if (medicine == null)

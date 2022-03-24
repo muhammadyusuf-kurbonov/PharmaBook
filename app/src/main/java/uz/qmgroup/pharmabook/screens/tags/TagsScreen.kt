@@ -8,11 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.components.TagsList
-import uz.qmgroup.pharmabook.repos.TagsRepo
+import uz.qmgroup.pharmabook.repos.MedicinesRepo
 import uz.qmgroup.pharmabook.screens.destinations.MedicineByTagScreenDestination
-import uz.qmgroup.pharmabook.tags.Tag
 
 @Destination
 @Composable
@@ -23,12 +23,20 @@ fun TagsScreen(
     var loading by remember {
         mutableStateOf(true)
     }
-    val list by produceState(initialValue = emptyList<Tag>(), producer = {
-        TagsRepo().getTags().collect {
-            this.value = it
-            loading = false
+
+    val list = remember { mutableStateListOf<String>() }
+
+    LaunchedEffect(key1 = Unit) {
+        launch(Dispatchers.IO) {
+            try {
+                loading = true
+                list.addAll(MedicinesRepo().getMedicines().flatMap { it.tags ?: emptyList() }
+                    .distinct())
+            } finally {
+                loading = false
+            }
         }
-    })
+    }
 
     if (loading) {
         LinearProgressIndicator(
@@ -40,7 +48,7 @@ fun TagsScreen(
                 .padding(16.dp, 8.dp),
             list = list,
             onClick = {
-                navigator.navigate(MedicineByTagScreenDestination(it.label))
+                navigator.navigate(MedicineByTagScreenDestination(it))
             }
         )
     }

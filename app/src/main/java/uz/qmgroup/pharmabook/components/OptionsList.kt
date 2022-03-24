@@ -1,11 +1,8 @@
 package uz.qmgroup.pharmabook.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -13,23 +10,31 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun OptionsList(
     modifier: Modifier = Modifier,
+    placeholder: String = "",
     items: List<String>,
     addItem: (String) -> Unit,
     deleteItem: (String) -> Unit
 ) {
     var newOption by remember { mutableStateOf("") }
 
-    LazyColumn(modifier = modifier) {
-        items(items) {
+    fun commit() {
+        if (newOption.isEmpty()) return
+        addItem(newOption)
+        newOption = ""
+    }
+
+    Column(modifier = modifier) {
+        items.forEach {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(0.dp, 4.dp),
+                    .padding(8.dp, 4.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -45,24 +50,31 @@ fun OptionsList(
                 }
             }
         }
-        item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedTextField(
-                    modifier = Modifier.weight(1f),
-                    value = newOption,
-                    onValueChange = { newOption = it },
-                    textStyle = MaterialTheme.typography.body1
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp, 4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                modifier = Modifier.weight(1f),
+                value = newOption,
+                placeholder = { Text(text = placeholder) },
+                onValueChange = { newOption = it },
+                textStyle = MaterialTheme.typography.body1,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { commit() }
                 )
-                IconButton(onClick = { addItem(newOption); newOption = "" }) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "")
-                }
+            )
+            IconButton(onClick = { commit() }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "")
             }
         }
+
     }
 }

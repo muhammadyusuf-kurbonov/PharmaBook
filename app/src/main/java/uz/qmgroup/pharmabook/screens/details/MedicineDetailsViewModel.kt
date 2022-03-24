@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -22,7 +24,18 @@ class MedicineDetailsViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 isLoading = true
-                _medicine.tryEmit(MedicinesRepo().getMedicine(id))
+                val value = MedicinesRepo().getMedicine(id)
+                if (value != null) {
+                    _medicine.tryEmit(value)
+                    val alternatives = value.alternativeIds.map {
+                        async {
+                            MedicinesRepo().getMedicine(it)
+                        }
+                    }.awaitAll().filterNotNull()
+                    _medicine.tryEmit(value.copy(
+                        alternatives = alternatives
+                    ))
+                }
             } finally {
                 isLoading = false
             }

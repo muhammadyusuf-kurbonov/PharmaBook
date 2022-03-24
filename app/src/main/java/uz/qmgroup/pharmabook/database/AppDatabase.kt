@@ -7,19 +7,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import uz.qmgroup.pharmabook.medicines.MedicineDao
 import uz.qmgroup.pharmabook.medicines.MedicineEntity
-import uz.qmgroup.pharmabook.tags.TagDao
-import uz.qmgroup.pharmabook.tags.TagEntity
 
 @Database(
     entities = [
-        MedicineEntity::class,
-        TagEntity::class,
-        MedicineTagCrossRef::class
+        MedicineEntity::class
     ],
-    version = 3,
+    version = 4,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
-        AutoMigration(from = 2, to = 3),
+        AutoMigration(from = 2, to = 3, spec = Migration2_3::class),
+        AutoMigration(from = 3, to = 4),
     ]
 )
 abstract class AppDatabase: RoomDatabase(){
@@ -37,6 +34,4 @@ abstract class AppDatabase: RoomDatabase(){
     }
 
     abstract fun medicineDao(): MedicineDao
-    abstract fun tagDao(): TagDao
-    abstract fun medicineTagCrossRefDao(): MedicineTagCrossRefDao
 }

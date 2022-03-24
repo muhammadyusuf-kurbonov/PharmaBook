@@ -10,7 +10,7 @@ interface MedicineDao {
     @Update
     suspend fun update(medicine: MedicineEntity)
 
-    @Query("DELETE FROM MedicineEntity WHERE medicineId = :id")
+    @Query("DELETE FROM MEDICINEENTITY WHERE medicineId = :id")
     suspend fun delete(id: Long)
 
     @Query("SELECT * FROM MEDICINEENTITY ORDER BY name")
@@ -22,7 +22,8 @@ interface MedicineDao {
     @Query("SELECT * FROM MEDICINEENTITY WHERE name LIKE :name ORDER BY name")
     suspend fun getByName(name: String): List<MedicineEntity>
 
-    @Transaction
-    @Query("SELECT * FROM MEDICINEENTITY WHERE medicineId = :id")
-    suspend fun getWithTags(id: Long): MedicineWithTags
+    @Query("SELECT * FROM MEDICINEENTITY WHERE tags LIKE :tag ORDER BY name")
+    suspend fun getByTag(tag: String): List<MedicineEntity>
+
+
 }

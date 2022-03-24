@@ -25,4 +25,9 @@
     <string name="medicine_not_found">Лекарство не найдено</string>
     <string name="select_tag">Выберите тег</string>
     <string name="diagnoses">Предназначения</string>
+    <string name="Tag">Тег</string>
+    <string name="Diagnose">Показание</string>
+    <string name="new_diagnose">Новое показание</string>
+    <string name="new_tag">Новый тег</string>
+    <string name="alternatives">Заменители</string>
 </resources>
