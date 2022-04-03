@@ -1,7 +1,7 @@
 package uz.qmgroup.pharmabook
 
 import android.app.Application
-import uz.qmgroup.pharmabook.database.AppDatabase
+import uz.qmgroup.pharmabook.repos.database.AppDatabase
 
 class PharmaBookApp: Application() {
     override fun onCreate() {

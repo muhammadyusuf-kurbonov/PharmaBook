@@ -25,6 +25,7 @@ fun MedicinesList(
     onEdit: (Medicine) -> Unit = {},
     onDelete: (Medicine) -> Unit = {},
     onCLick: (Medicine) -> Unit = {},
+    onCopy: (Medicine) -> Unit = {}
 ) {
     Column {
         if (loading) {
@@ -33,7 +34,10 @@ fun MedicinesList(
             )
         } else {
             if (list.isNotEmpty()) {
-                LazyColumn(modifier = modifier) {
+                LazyColumn(
+                    modifier = modifier,
+                    contentPadding = PaddingValues(0.dp, 8.dp)
+                ) {
                     items(list) {
                         MedicineCard(
                             modifier = Modifier
@@ -42,7 +46,8 @@ fun MedicinesList(
                             medicineModels = it,
                             editorEnabled = editorEnabled,
                             onEdit = onEdit,
-                            onDelete = onDelete
+                            onDelete = onDelete,
+                            onCopy = onCopy
                         )
                     }
                 }

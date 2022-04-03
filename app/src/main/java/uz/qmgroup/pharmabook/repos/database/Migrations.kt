@@ -1,4 +1,4 @@
-package uz.qmgroup.pharmabook.database
+package uz.qmgroup.pharmabook.repos.database
 
 import androidx.room.DeleteColumn
 import androidx.room.DeleteTable

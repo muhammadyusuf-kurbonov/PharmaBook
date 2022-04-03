@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
-import com.google.accompanist.insets.*
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.navigationBarsWithImePadding
+import com.google.accompanist.insets.statusBarsPadding
 import uz.qmgroup.pharmabook.screens.main.MainScreen
 import uz.qmgroup.pharmabook.ui.theme.PharmaBookTheme
 

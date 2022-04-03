@@ -1,4 +1,4 @@
-package uz.qmgroup.pharmabook.database
+package uz.qmgroup.pharmabook.repos.database
 
 import android.content.Context
 import androidx.room.AutoMigration

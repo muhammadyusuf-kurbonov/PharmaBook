@@ -19,6 +19,8 @@ fun AutoCompleteMultiSelect(
     deselect: (String) -> Unit,
 ) {
     var query by remember { mutableStateOf("") }
+    var dialogState by remember { mutableStateOf(false) }
+
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
@@ -36,12 +38,12 @@ fun AutoCompleteMultiSelect(
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = query,
-                onValueChange = { query = it }
+                onValueChange = { query = it; dialogState = true }
             )
             val filteredItems = allItems.filter { !selected.contains(it) and it.contains(query, ignoreCase = true) }
 
             if (filteredItems.isNotEmpty()) {
-                DropdownMenu(expanded = query.isNotEmpty(), onDismissRequest = {}) {
+                DropdownMenu(expanded = query.isNotEmpty() && dialogState, onDismissRequest = {dialogState = false}) {
                     filteredItems.forEach {
                         DropdownMenuItem(onClick = { select(it) }) {
                             Text(text = it)

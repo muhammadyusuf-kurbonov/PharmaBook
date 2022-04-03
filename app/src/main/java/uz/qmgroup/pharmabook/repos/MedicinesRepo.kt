@@ -3,7 +3,7 @@ package uz.qmgroup.pharmabook.repos
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import uz.qmgroup.pharmabook.database.AppDatabase
+import uz.qmgroup.pharmabook.repos.database.AppDatabase
 import uz.qmgroup.pharmabook.medicines.Medicine
 
 class MedicinesRepo {
