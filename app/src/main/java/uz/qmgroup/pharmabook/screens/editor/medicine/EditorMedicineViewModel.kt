@@ -1,5 +1,6 @@
 package uz.qmgroup.pharmabook.screens.editor.medicine
 
+import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,7 +34,8 @@ class EditorMedicineViewModel : ViewModel() {
 
     fun loadMedicines(){
         viewModelScope.launch {
-            allMedicines.addAll(MedicinesRepo().getMedicines())
+            allMedicines.addAll(MedicinesRepo().getMedicines().filter { it.id != medicine?.id })
+            Log.d("filter", "Loaded ${allMedicines.size} medicines")
         }
     }
 
