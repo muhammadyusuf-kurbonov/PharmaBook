@@ -3,7 +3,7 @@ package uz.qmgroup.pharmabook.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,7 +14,7 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Tag
 import uz.qmgroup.pharmabook.R
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TagsList(
     modifier: Modifier = Modifier,
@@ -25,10 +25,10 @@ fun TagsList(
     if (list.isNotEmpty()) {
         LazyColumn(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
             items(list) {
-                Card(
+                ElevatedCard(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    elevation = 8.dp,
+                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
                     onClick = {
                         onClick(it)
                     }
@@ -44,9 +44,9 @@ fun TagsList(
                             imageVector = FontAwesomeIcons.Solid.Tag,
                             contentDescription = null,
                             modifier = Modifier.height(24.dp),
-                            tint = MaterialTheme.colors.primary
+                            tint = MaterialTheme.colorScheme.primary
                         )
-                        Text(text = it, style = MaterialTheme.typography.body1)
+                        Text(text = it, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }

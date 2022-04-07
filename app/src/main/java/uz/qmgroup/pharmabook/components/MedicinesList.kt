@@ -4,9 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,7 +55,7 @@ fun MedicinesList(
                         modifier = Modifier.align(Alignment.Center),
                         text = stringResource(R.string.No_medicines),
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.h6
+                        style = MaterialTheme.typography.titleSmall
                     )
                 }
         }

@@ -3,7 +3,7 @@ package uz.qmgroup.pharmabook.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -38,14 +38,14 @@ fun OptionsList(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = it, style = MaterialTheme.typography.body1)
+                Text(text = it, style = MaterialTheme.typography.bodyMedium)
                 IconButton(
                     onClick = { deleteItem(it) },
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "",
-                        tint = MaterialTheme.colors.error
+                        tint = MaterialTheme.colorScheme.error
                     )
                 }
             }
@@ -63,7 +63,7 @@ fun OptionsList(
                 value = newOption,
                 placeholder = { Text(text = placeholder) },
                 onValueChange = { newOption = it },
-                textStyle = MaterialTheme.typography.body1,
+                textStyle = MaterialTheme.typography.bodyMedium,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
                 ),

@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -28,7 +28,7 @@ fun Section(
             modifier = modifier
                 .border(
                     1.dp,
-                    MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.disabled),
+                    MaterialTheme.colorScheme.onBackground.copy(alpha = ContentAlpha.disabled),
                     shape = RoundedCornerShape(4.dp)
                 )
         ) {
@@ -46,11 +46,11 @@ fun Section(
         Row(
             modifier = Modifier
                 .offset(12.dp, (-8).dp)
-                .background(MaterialTheme.colors.background),
+                .background(MaterialTheme.colorScheme.background),
         ){
             Text(
                 modifier = Modifier.padding(4.dp, 0.dp),
-                style = MaterialTheme.typography.caption,
+                style = MaterialTheme.typography.labelSmall,
                 text = title,
             )
         }

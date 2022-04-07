@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Search
@@ -39,7 +39,7 @@ fun EditorHomeScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = editorHomeViewModel.searchPattern,
                 onValueChange = editorHomeViewModel::updateSearchPattern,
-                placeholder = { Text(text = stringResource(R.string.search), style = MaterialTheme.typography.body2) },
+                placeholder = { Text(text = stringResource(R.string.search), style = MaterialTheme.typography.bodyMedium) },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(
                     onSearch = {
@@ -56,7 +56,7 @@ fun EditorHomeScreen(
                 },
                 singleLine = true,
                 shape = RoundedCornerShape(8.dp),
-                textStyle = MaterialTheme.typography.body2
+                textStyle = MaterialTheme.typography.bodyMedium
             )
 
             MedicinesList(

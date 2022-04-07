@@ -3,9 +3,7 @@ package uz.qmgroup.pharmabook.screens.details
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -40,7 +38,7 @@ fun MedicineDetailsScreen(
         if (medicineDetailsViewModel.isLoading)
             LinearProgressIndicator()
 
-        Text(text = stringResource(R.string.details), style = MaterialTheme.typography.overline)
+        Text(text = stringResource(R.string.details), style = MaterialTheme.typography.headlineMedium)
 
         val medicine by medicineDetailsViewModel.medicine.collectAsState()
 
@@ -63,7 +61,7 @@ fun MedicineDetailsScreen(
 
             Text(
                 text = stringResource(R.string.diagnoses),
-                style = MaterialTheme.typography.subtitle1,
+                style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold
             )
 
@@ -71,7 +69,7 @@ fun MedicineDetailsScreen(
                 Text(
                     modifier = Modifier.padding(8.dp, 0.dp),
                     text = it,
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
 
@@ -79,7 +77,7 @@ fun MedicineDetailsScreen(
 
             Text(
                 text = stringResource(R.string.alternatives),
-                style = MaterialTheme.typography.subtitle1,
+                style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold
             )
 
@@ -87,7 +85,7 @@ fun MedicineDetailsScreen(
                 Text(
                     modifier = Modifier.padding(8.dp, 0.dp),
                     text = it.name,
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
         } else {

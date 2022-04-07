@@ -1,11 +1,12 @@
 package uz.qmgroup.pharmabook.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Chip
+import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -34,7 +35,12 @@ fun AutoCompleteMultiSelect(
             crossAxisSpacing = 4.dp
         ) {
             selected.forEach {
-                Chip(onClick = { deselect(it) }) {
+                Chip(
+                    onClick = { deselect(it) }, colors = ChipDefaults.chipColors(
+                        backgroundColor = MaterialTheme.colorScheme.background,
+                        contentColor = MaterialTheme.colorScheme.primary
+                    ), border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary)
+                ) {
                     Text(text = it)
                 }
             }
