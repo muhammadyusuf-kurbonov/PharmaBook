@@ -62,14 +62,16 @@ fun MedicineCard(
                         contentDescription = null
                     )
                 }
-                IconButton(onClick = {
-                    onDelete(medicineModels)
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = null,
-                        tint = Color.Red
-                    )
+                ConfirmableButton(confirm = { onDelete(medicineModels) }) {
+                    IconButton(onClick = {
+                        requestConfirmation()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = null,
+                            tint = Color.Red
+                        )
+                    }
                 }
             } else {
                 Text(
