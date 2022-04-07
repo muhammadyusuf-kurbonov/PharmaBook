@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import uz.qmgroup.pharmabook.medicines.Medicine
 import uz.qmgroup.pharmabook.repos.MedicinesRepo
@@ -32,7 +34,7 @@ class EditorMedicineViewModel : ViewModel() {
 
     private var saving by mutableStateOf(false)
 
-    fun loadMedicines(){
+    fun loadMedicines() {
         viewModelScope.launch {
             allMedicines.addAll(MedicinesRepo().getMedicines().filter { it.id != medicine?.id })
             Log.d("filter", "Loaded ${allMedicines.size} medicines")
@@ -43,13 +45,20 @@ class EditorMedicineViewModel : ViewModel() {
         viewModelScope.launch {
             val medicinesRepo = MedicinesRepo()
             medicine = medicinesRepo.getMedicine(medicineId)
-            if (medicine != null){
+            if (medicine != null) {
                 val foundMedicine = medicine!!
                 medicineName = foundMedicine.name
                 medicineVendor = foundMedicine.vendor
                 medicinePosition = foundMedicine.positionColumn to foundMedicine.positionRow
                 medicineTags.addAll(foundMedicine.tags ?: emptyList())
                 medicineDiagnoses.addAll(foundMedicine.diagnoses)
+                alternativeMedicines.addAll(
+                    foundMedicine.alternativeIds.map {
+                        async {
+                            MedicinesRepo().getMedicine(it)
+                        }
+                    }.awaitAll().filterNotNull()
+                )
             }
         }
     }
@@ -67,7 +76,7 @@ class EditorMedicineViewModel : ViewModel() {
     fun updateMedicinePositionRow(row: String) {
         medicinePosition = try {
             medicinePosition.first to row.toInt()
-        } catch (e: NumberFormatException){
+        } catch (e: NumberFormatException) {
             medicinePosition.first to 0
         }
     }
@@ -80,16 +89,16 @@ class EditorMedicineViewModel : ViewModel() {
         }
     }
 
-    fun addTag(tag: String){
+    fun addTag(tag: String) {
         if (tag.isNotEmpty())
             medicineTags.add(tag)
     }
 
-    fun removeTag(tag: String){
+    fun removeTag(tag: String) {
         medicineTags.remove(tag)
     }
 
-    fun addAlternative(medicineName: String){
+    fun addAlternative(medicineName: String) {
         val medicine = allMedicines.find { it.name == medicineName }
         if (medicine != null)
             alternativeMedicines.add(medicine)
@@ -97,7 +106,7 @@ class EditorMedicineViewModel : ViewModel() {
             throw IllegalStateException("Medicine not found")
     }
 
-    fun removeAlternative(medicineName: String){
+    fun removeAlternative(medicineName: String) {
         val medicine = alternativeMedicines.find { it.name == medicineName }
         if (medicine != null)
             alternativeMedicines.remove(medicine)
@@ -106,13 +115,12 @@ class EditorMedicineViewModel : ViewModel() {
     }
 
     @Composable
-    fun isSaveButtonEnabled()
-        = medicineName.isNotEmpty()
+    fun isSaveButtonEnabled() = medicineName.isNotEmpty()
             && medicineVendor.isNotEmpty()
             && medicineDiagnoses.isNotEmpty()
             && !saving
 
-    fun save(){
+    fun save() {
         saving = true
         val newMedicineModels = Medicine(
             id = medicine?.id ?: 0L,

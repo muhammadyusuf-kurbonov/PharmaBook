@@ -1,9 +1,6 @@
 package uz.qmgroup.pharmabook.screens.main
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -74,7 +71,7 @@ fun MainScreen(
             },
             content = {
                 DestinationsNavHost(
-                    modifier = Modifier.padding(it),
+                    modifier = Modifier.fillMaxSize().padding(it),
                     navGraph = NavGraphs.root,
                     navController = navHostController
                 )

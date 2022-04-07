@@ -20,12 +20,14 @@ data class MedicineEntity(
     @ColumnInfo(defaultValue = "") val tags: String,
     @ColumnInfo(defaultValue = "") val alternativeIds: String,
 ) {
-    fun toMedicine() = Medicine(id = medicineId,
+    fun toMedicine() = Medicine(
+        id = medicineId,
         name = name,
         vendor = vendor,
         positionColumn = positionColumn,
         positionRow = positionRow,
-        diagnoses = diagnoses.split(";"),
-        tags = tags.split(";"),
-        alternativeIds = alternativeIds.split(";").filter { it.isNotEmpty() }.map { it.toLong() })
+        diagnoses = diagnoses.split(";").filter { it.isNotEmpty() },
+        tags = tags.split(";").filter { it.isNotEmpty() },
+        alternativeIds = alternativeIds.split(";").filter { it.isNotEmpty() }.map { it.toLong() }
+    )
 }

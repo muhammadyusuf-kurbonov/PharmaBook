@@ -1,5 +1,7 @@
 package uz.qmgroup.pharmabook.medicines
 
+import uz.qmgroup.pharmabook.repos.MedicinesRepo
+
 data class Medicine(
     val id: Long,
     val name: String,
