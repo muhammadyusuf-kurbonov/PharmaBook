@@ -17,6 +17,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import uz.qmgroup.pharmabook.R
 import uz.qmgroup.pharmabook.components.AutoCompleteMultiSelect
 import uz.qmgroup.pharmabook.components.OptionsList
+import uz.qmgroup.pharmabook.components.ScreenTitle
 import uz.qmgroup.pharmabook.components.Section
 
 @Destination
@@ -39,13 +40,11 @@ fun EditorMedicineScreen(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        Text(
-            text = if (editorMedicineViewModel.medicine == null) stringResource(R.string.New_medicine)
-                    else stringResource(R.string.Update_medicine),
-            style = MaterialTheme.typography.headlineSmall
-        )
 
-        Spacer(modifier = Modifier.height(4.dp))
+        ScreenTitle(
+            title = if (editorMedicineViewModel.medicine == null) stringResource(R.string.New_medicine)
+            else stringResource(R.string.Update_medicine)
+        )
 
         OutlinedTextField(
             modifier = Modifier

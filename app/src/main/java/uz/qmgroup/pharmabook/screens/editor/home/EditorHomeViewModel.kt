@@ -12,6 +12,9 @@ class EditorHomeViewModel : ViewModel() {
     var loading by mutableStateOf(false)
         private set
 
+    var searchEnabled by mutableStateOf(false)
+        private set
+
     var searchPattern by mutableStateOf("")
         private set
 
@@ -41,6 +44,10 @@ class EditorHomeViewModel : ViewModel() {
             ) else it.toString()
         }
         startSearch()
+    }
+
+    fun enableSearch() {
+        searchEnabled = true
     }
 
     fun startSearch() {
