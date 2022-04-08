@@ -30,4 +30,7 @@
     <string name="new_diagnose">New diagnose</string>
     <string name="new_tag">New tag</string>
     <string name="alternatives">Alternatives</string>
+    <string name="Settings">Settings</string>
+    <string name="New_medicine">New medicine</string>
+    <string name="Update_medicine">Update medicine</string>
 </resources>

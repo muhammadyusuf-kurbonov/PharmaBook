@@ -39,6 +39,14 @@ fun EditorMedicineScreen(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
+        Text(
+            text = if (editorMedicineViewModel.medicine == null) stringResource(R.string.New_medicine)
+                    else stringResource(R.string.Update_medicine),
+            style = MaterialTheme.typography.headlineSmall
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(),

@@ -24,20 +24,21 @@ import uz.qmgroup.pharmabook.screens.destinations.SettingsScreenDestination
 import uz.qmgroup.pharmabook.screens.destinations.TagsScreenDestination
 import uz.qmgroup.pharmabook.ui.theme.NavigationItem
 
-val menuItems = listOf(
+@Composable
+fun menuItems() = listOf(
     NavigationItem(
         icon = FontAwesomeIcons.Solid.List,
-        label = "Medicines",
+        label = stringResource(id = R.string.Medicines),
         route = HomeScreenDestination
     ),
     NavigationItem(
         icon = FontAwesomeIcons.Solid.Tags,
-        label = "Tags",
+        label = stringResource(id = R.string.Tags),
         route = TagsScreenDestination
     ),
     NavigationItem(
         icon = FontAwesomeIcons.Solid.Cog,
-        label = "Settings",
+        label = stringResource(R.string.Settings),
         route = SettingsScreenDestination
     ),
 )
@@ -70,7 +71,9 @@ fun MainScreen(
             },
             content = {
                 DestinationsNavHost(
-                    modifier = Modifier.fillMaxSize().padding(it),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(it),
                     navGraph = NavGraphs.root,
                     navController = navHostController
                 )
@@ -80,13 +83,15 @@ fun MainScreen(
                     modifier = Modifier.fillMaxWidth(),
                     containerColor = MaterialTheme.colorScheme.surface
                 ) {
-                    menuItems.forEach {
+                    menuItems().forEach {
                         NavigationBarItem(
                             selected = currentBackStackEntry?.destination?.route == it.route.route,
                             onClick = { navHostController.navigateTo(it.route) },
                             label = { Text(text = it.label) },
                             icon = { Icon(
-                                modifier = Modifier.width(24.dp).height(24.dp),
+                                modifier = Modifier
+                                    .width(24.dp)
+                                    .height(24.dp),
                                 imageVector = it.icon,
                                 contentDescription = it.label
                             ) }

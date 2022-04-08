@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 
 interface ConfirmableButtonScope {
     fun requestConfirmation()
+    val confirmMode: Boolean
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -28,6 +29,9 @@ fun ConfirmableButton(
             override fun requestConfirmation() {
                 isConfirmMode = true
             }
+
+            override val confirmMode: Boolean
+                get() = isConfirmMode
         }
     }
 

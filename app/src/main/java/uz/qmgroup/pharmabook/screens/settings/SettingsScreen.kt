@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import uz.qmgroup.pharmabook.R
 import uz.qmgroup.pharmabook.screens.destinations.AboutScreenDestination
 import uz.qmgroup.pharmabook.screens.destinations.EditorHomeScreenDestination
 
@@ -22,21 +24,25 @@ fun SettingsScreen(
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        Row(modifier = Modifier.fillMaxWidth().clickable {
-            navigator.navigate(EditorHomeScreenDestination)
-        }) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                navigator.navigate(EditorHomeScreenDestination)
+            }) {
             Text(
-                text = "Medicines",
+                text = stringResource(id = R.string.Medicines),
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(4.dp)
             )
         }
 
-        Row(modifier = Modifier.fillMaxWidth().clickable {
-            navigator.navigate(AboutScreenDestination)
-        }) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                navigator.navigate(AboutScreenDestination)
+            }) {
             Text(
-                text = "About",
+                text = stringResource(id = R.string.About),
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(4.dp)
             )

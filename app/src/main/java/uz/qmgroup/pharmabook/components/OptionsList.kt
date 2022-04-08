@@ -58,7 +58,7 @@ fun OptionsList(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TextField(
+            OutlinedTextField(
                 modifier = Modifier.weight(1f),
                 value = newOption,
                 placeholder = { Text(text = placeholder) },

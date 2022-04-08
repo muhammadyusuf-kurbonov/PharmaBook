@@ -30,4 +30,7 @@
     <string name="new_diagnose">Новое показание</string>
     <string name="new_tag">Новый тег</string>
     <string name="alternatives">Заменители</string>
+    <string name="Settings">Настройки</string>
+    <string name="New_medicine">Добавить лекраство</string>
+    <string name="Update_medicine">Обновить лекарство</string>
 </resources>

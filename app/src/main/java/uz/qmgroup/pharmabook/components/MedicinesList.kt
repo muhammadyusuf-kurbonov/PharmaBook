@@ -41,7 +41,7 @@ fun MedicinesList(
                             modifier = Modifier
                                 .padding(4.dp, 2.dp)
                                 .clickable { onCLick(it) },
-                            medicineModels = it,
+                            medicine = it,
                             editorEnabled = editorEnabled,
                             onEdit = onEdit,
                             onDelete = onDelete,
