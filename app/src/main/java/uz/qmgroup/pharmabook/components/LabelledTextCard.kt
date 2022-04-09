@@ -20,13 +20,14 @@ fun LabelledTextCard(
     modifier: Modifier = Modifier,
     label: String,
     text: String,
-    textStyle: TextStyle = MaterialTheme.typography.displaySmall
+    textStyle: TextStyle = MaterialTheme.typography.displaySmall,
+    textAlign: TextAlign = TextAlign.End
 ) {
     Card(modifier = modifier) {
         Column(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
             Text(text = label, style = MaterialTheme.typography.labelMedium)
 
-            Text(text = text, style = textStyle, modifier = Modifier.align(Alignment.End), textAlign = TextAlign.End)
+            Text(text = text, style = textStyle, modifier = Modifier.fillMaxWidth().align(Alignment.End), textAlign = textAlign)
         }
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -58,7 +59,8 @@ fun MedicineDetailsScreen(
                         .weight(1f)
                         .fillMaxHeight(),
                     label = stringResource(id = R.string.Name),
-                    text = medicine?.name.orEmpty()
+                    text = medicine?.name.orEmpty(),
+                    textAlign = TextAlign.Start
                 )
 
                 LabelledTextCard(
