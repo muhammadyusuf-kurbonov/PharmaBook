@@ -15,7 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import uz.qmgroup.pharmabook.R
-import uz.qmgroup.pharmabook.components.LabelledText
+import uz.qmgroup.pharmabook.components.LabelledTextCard
+import uz.qmgroup.pharmabook.components.MedicineCard
 
 @Destination
 @Composable
@@ -38,21 +39,39 @@ fun MedicineDetailsScreen(
         if (medicineDetailsViewModel.isLoading)
             LinearProgressIndicator()
 
-        Text(text = stringResource(R.string.details), style = MaterialTheme.typography.headlineMedium)
+        Text(text = stringResource(R.string.details), style = MaterialTheme.typography.titleMedium)
 
         val medicine by medicineDetailsViewModel.medicine.collectAsState()
 
         if (medicine != null) {
-            LabelledText(label = stringResource(R.string.id_number), text = medicine?.id.toString())
-
-            LabelledText(
-                label = stringResource(id = R.string.Name),
-                text = medicine?.name.orEmpty()
+            LabelledTextCard(
+                modifier = Modifier.fillMaxWidth(),
+                label = stringResource(R.string.id_number),
+                text = medicine?.id.toString()
             )
 
-            LabelledText(label = stringResource(id = R.string.Producer), text = medicine?.vendor.orEmpty())
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                LabelledTextCard(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    label = stringResource(id = R.string.Name),
+                    text = medicine?.name.orEmpty()
+                )
 
-            LabelledText(
+                LabelledTextCard(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    label = stringResource(id = R.string.Producer),
+                    text = medicine?.vendor.orEmpty()
+                )
+            }
+
+            LabelledTextCard(
+                modifier = Modifier.fillMaxWidth(),
                 label = stringResource(R.string.position),
                 text = "${medicine?.positionRow} / ${medicine?.positionColumn}"
             )
@@ -61,7 +80,7 @@ fun MedicineDetailsScreen(
 
             Text(
                 text = stringResource(R.string.diagnoses),
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
 
@@ -75,19 +94,18 @@ fun MedicineDetailsScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                text = stringResource(R.string.alternatives),
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Bold
-            )
-
-            medicine?.alternatives?.forEach {
+            if (!medicine?.alternatives.isNullOrEmpty()){
                 Text(
-                    modifier = Modifier.padding(8.dp, 0.dp),
-                    text = it.name,
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = stringResource(R.string.alternatives),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold
                 )
+
+                medicine?.alternatives?.forEach {
+                    MedicineCard(medicine = it)
+                }
             }
+
         } else {
             Text(text = stringResource(R.string.medicine_not_found))
         }
