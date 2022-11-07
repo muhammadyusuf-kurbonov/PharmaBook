@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name" translatable="false">PharmaBook</string>
+    <string name="app_name">Money and Banks: Glossary</string>
     <string name="add">Add</string>
-    <string name="Producer">Producer</string>
+    <string name="Definition">Definition</string>
     <string name="Name">Name</string>
     <string name="Home">Home</string>
     <string name="Tags">Tags</string>
     <string name="Profile">Profile</string>
     <string name="Editor">Editor</string>
     <string name="About">About</string>
-    <string name="Medicines">Medicines</string>
-    <string name="No_medicines">No medicines</string>
+    <string name="Medicines">Terms</string>
+    <string name="No_terms">No terms</string>
     <string name="No_tags">No tags</string>
     <string name="Loading">Loading…</string>
     <string name="Tag_label">Tag name</string>
@@ -21,7 +21,7 @@
     <string name="details">Details</string>
     <string name="id_number">ID number</string>
     <string name="position">Position</string>
-    <string name="medicine_not_found">Medicine not found</string>
+    <string name="terms_not_found">Medicine not found</string>
     <string name="select_tag">Select tag</string>
     <string name="create_tag">Create tag \"%1s\"</string>
     <string name="diagnoses">Diagnoses</string>
@@ -29,5 +29,5 @@
     <string name="Diagnose">Diagnose</string>
     <string name="new_diagnose">New diagnose</string>
     <string name="new_tag">New tag</string>
-    <string name="alternatives">Alternatives</string>
+    <string name="synonyms">Synonyms</string>
 </resources>

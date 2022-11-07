@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Деньги и Банки: Глоссарий</string>
     <string name="add">Добавить</string>
-    <string name="Producer">Производитель</string>
+    <string name="Definition">Определение</string>
     <string name="Name">Название</string>
     <string name="Home">Главная</string>
     <string name="Tags">Теги</string>
@@ -9,7 +10,7 @@
     <string name="Editor">Редактор</string>
     <string name="About">О нас</string>
     <string name="Medicines">Лекарства</string>
-    <string name="No_medicines">Нет лекарств</string>
+    <string name="No_terms">Нет лекарств</string>
     <string name="No_tags">Нет тегов</string>
     <string name="Loading">Загрузка …</string>
     <string name="Tag_label">Тег</string>
@@ -22,12 +23,12 @@
     <string name="details">Подробности</string>
     <string name="id_number">ИД номер</string>
     <string name="position">Расположение</string>
-    <string name="medicine_not_found">Лекарство не найдено</string>
+    <string name="terms_not_found">Лекарство не найдено</string>
     <string name="select_tag">Выберите тег</string>
     <string name="diagnoses">Предназначения</string>
     <string name="Tag">Тег</string>
     <string name="Diagnose">Показание</string>
     <string name="new_diagnose">Новое показание</string>
     <string name="new_tag">Новый тег</string>
-    <string name="alternatives">Заменители</string>
+    <string name="synonyms">Синонимы</string>
 </resources>
